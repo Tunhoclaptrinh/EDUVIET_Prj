@@ -1,202 +1,111 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Siderbar';
 
-import { Button, Card, Col, Row, Typography, Layout } from 'antd';
+import { Button, Card, Col, Row, Typography, Layout, Spin, message } from 'antd';
 import { Link } from 'umi';
 
-import { HomeOutlined, ReadOutlined, FileTextOutlined, EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import {
+	HomeOutlined,
+	ReadOutlined,
+	FileTextOutlined,
+	EyeOutlined,
+	ClockCircleOutlined,
+	UserOutlined,
+	StarOutlined,
+} from '@ant-design/icons';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
-const TrangChuPage = () => {
-	const sidebarNavItems = [
+interface SidebarNavItem {
+	key: string;
+	icon: React.ReactElement;
+	text: string;
+	to: string;
+}
+
+const TrangChuPage: React.FC = () => {
+	const [courses, setCourses] = useState<Course.IRecord[]>([]);
+	const [categories, setCategories] = useState<Category.IRecord[]>([]);
+	const [blogPosts, setBlogPosts] = useState<BlogPost.IRecord[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+
+	const sidebarNavItems: SidebarNavItem[] = [
 		{ key: '1', icon: <HomeOutlined />, text: 'Trang chủ', to: '/' },
 		{ key: '2', icon: <ReadOutlined />, text: 'Lập trình', to: '/programming' },
 		{ key: '3', icon: <FileTextOutlined />, text: 'Bài viết', to: '/articles' },
 	];
 
-	const handleVoiceClick = () => {
+	const handleVoiceClick = (): void => {
 		console.log('Voice mode activated');
 	};
 
-	// Sample data for sections
-	const proCourses = [
-		{
-			title: 'HTML, CSS Pro',
-			description: 'Cho người mới bắt đầu',
-			price: '2.500.000đ',
-			discountedPrice: '1.299.000đ',
-			students: 950,
-			duration: '116h50p',
-			gradient: 'linear-gradient(90deg, #1e3c72, #2a5298)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'JavaScript Pro',
-			description: 'Cho người mới bắt đầu',
-			price: '3.299.000đ',
-			discountedPrice: '1.399.000đ',
-			students: 213,
-			duration: '42h23p',
-			gradient: 'linear-gradient(90deg, #f7971e, #ffd200)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'Ngôn ngữ Sass',
-			description: 'Cho FrontEnd Developer',
-			price: '400.000đ',
-			discountedPrice: '299.000đ',
-			students: 27,
-			duration: '6h18p',
-			gradient: 'linear-gradient(90deg, #ff6b6b, #f0a8d0)',
-			instructor: 'Sơn Đặng',
-		},
-	];
+	// Fetch data from APIs
+	useEffect(() => {
+		const fetchData = async (): Promise<void> => {
+			try {
+				setLoading(true);
+				const [coursesRes, categoriesRes, blogPostsRes] = await Promise.all([
+					axios.get<Course.IRecord[]>('http://localhost:3000/courses'),
+					axios.get<Category.IRecord[]>('http://localhost:3000/categories'),
+					axios.get<BlogPost.IRecord[]>('http://localhost:3000/blogPosts'),
+				]);
 
-	const freeCourses = [
-		{
-			title: 'Kiến Thức Nhập Môn',
-			description: 'Kiến Thức Nhập Môn IT',
-			students: 154515,
-			gradient: 'linear-gradient(90deg, #00c4b4, #00e676)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'Tự động hóa',
-			description: 'Lập trình C++ cơ bản, nâng cao',
-			students: 134525,
-			gradient: 'linear-gradient(90deg, #ff6b6b, #ff8e53)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'HTML, CSS',
-			description: 'HTML, CSS từ Zero đến Hero',
-			students: 132525,
-			gradient: 'linear-gradient(90deg, #1e3c72, #2a5298)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'Responsive',
-			description: 'Responsive Với Grid System',
-			students: 114514,
-			gradient: 'linear-gradient(90deg, #8e2de2, #4a00e0)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'JavaScript Cơ bản',
-			description: 'Lập trình JavaScript Cơ bản',
-			students: 134525,
-			gradient: 'linear-gradient(90deg, #f7971e, #ffd200)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'JavaScript Nâng cao',
-			description: 'Lập trình JavaScript Nâng cao',
-			students: 124525,
-			gradient: 'linear-gradient(90deg, #ff6b6b, #ff8e53)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'WSL Ubuntu',
-			description: 'Làm việc với Terminal & Ubuntu',
-			students: 104514,
-			gradient: 'linear-gradient(90deg, #00c4b4, #00e676)',
-			instructor: 'Sơn Đặng',
-		},
-		{
-			title: 'React JS',
-			description: 'React JS Website với API',
-			students: 94514,
-			gradient: 'linear-gradient(90deg, #1e3c72, #2a5298)',
-			instructor: 'Sơn Đặng',
-		},
-	];
+				setCourses(coursesRes.data);
+				setCategories(categoriesRes.data);
+				setBlogPosts(blogPostsRes.data);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+				message.error('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	const articles = [
-		{
-			title: 'Từng bước để các bạn có thể tự học lập trình',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			author: 'Sơn Đặng',
-			views: 1345,
-		},
-		{
-			title: 'Học ReactJS tại F8 đầy đủ và chi tiết nhất',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			author: 'Sơn Đặng',
-			views: 1234,
-		},
-		{
-			title: 'Dành cho bạn: Tổng hợp tài liệu tự học GitHub',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			author: 'Sơn Đặng',
-			views: 1123,
-		},
-		{
-			title: 'Kỷ niệm 25/3: Chúng tôi đã học lập trình như thế nào?',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			author: 'Sơn Đặng',
-			views: 1012,
-		},
-	];
+		fetchData();
+	}, []);
 
-	const videos = [
-		{
-			title: 'Chúng tôi đã học lập trình như thế nào?',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1345,
-			duration: '12:34',
-		},
-		{
-			title: 'HTML, CSS từ Zero đến Hero - Bài 1',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1234,
-			duration: '10:20',
-		},
-		{
-			title: 'Phương pháp học lập trình hiệu quả tại F8',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1123,
-			duration: '15:45',
-		},
-		{
-			title: 'Code 300 dòng thiên nhiên cùng anh Sơn Đặng',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1012,
-			duration: '8:30',
-		},
-		{
-			title: 'JavaScript Cơ bản - Bài 1',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1345,
-			duration: '12:34',
-		},
-		{
-			title: 'React JS - Bài 1',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1234,
-			duration: '10:20',
-		},
-		{
-			title: 'HTML, CSS từ Zero đến Hero - Bài 2',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1123,
-			duration: '15:45',
-		},
-		{
-			title: 'Kỷ niệm 25/3: Chúng tôi đã học lập trình như thế nào?',
-			image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-			views: 1012,
-			duration: '8:30',
-		},
-	];
+	// Separate courses into pro and free
+	const proCourses: Course.IRecord[] = courses.filter((course) => course.price > 0);
+	const freeCourses: Course.IRecord[] = courses.filter((course) => course.price === 0);
+
+	const formatPrice = (price: number): string => {
+		return new Intl.NumberFormat('vi-VN', {
+			style: 'currency',
+			currency: 'VND',
+		}).format(price);
+	};
+
+	const formatNumber = (num: number): string => {
+		return new Intl.NumberFormat('vi-VN').format(num);
+	};
+
+	if (loading) {
+		return (
+			<Layout style={{ minHeight: '100vh' }}>
+				<Header />
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						minHeight: '400px',
+					}}
+				>
+					<Spin size='large' />
+				</div>
+				<Footer />
+			</Layout>
+		);
+	}
 
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
 			<Header />
 			<Layout style={{ margin: '80px 120px 60px' }}>
-				{/* Sticker Sidebar instead of regular sidebar */}
 				<Sidebar navItems={sidebarNavItems} onVoiceClick={handleVoiceClick} />
 
 				<Content style={{ marginTop: 80 }}>
@@ -213,16 +122,21 @@ const TrangChuPage = () => {
 						}}
 					>
 						<div>
-							<Title style={{ color: '#fff', margin: 0 }}>Bận rộn? Hãy để JavaScript Pro giúp bạn!</Title>
+							<Title style={{ color: '#fff', margin: 0 }}>Bận rộn? Hãy để các khóa học Pro giúp bạn!</Title>
 							<Paragraph style={{ color: '#fff', fontSize: '16px' }}>
-								Dù bạn bận rộn đến đâu, khóa học JavaScript Pro tại F8 sẽ giúp bạn nắm vững lập trình một cách hiệu quả
-								nhất.
+								Dù bạn bận rộn đến đâu, các khóa học chất lượng cao tại đây sẽ giúp bạn nắm vững kiến thức một cách hiệu
+								quả nhất.
 							</Paragraph>
-							<Link to='/register'>
+							<Link to='/courses'>
 								<Button
 									type='primary'
 									size='large'
-									style={{ background: '#fff', color: '#8e2de2', border: 'none', borderRadius: '20px' }}
+									style={{
+										background: '#fff',
+										color: '#8e2de2',
+										border: 'none',
+										borderRadius: '20px',
+									}}
 								>
 									BẮT ĐẦU HỌC
 								</Button>
@@ -238,155 +152,230 @@ const TrangChuPage = () => {
 					</div>
 
 					{/* Pro Courses Section */}
-					<div style={{ padding: '40px 0px' }}>
-						<Title level={2}>Khóa học Pro mới</Title>
-						<Row gutter={[16, 16]} justify='start'>
-							{proCourses.map((course, index) => (
-								<Col xs={24} sm={12} md={8} key={index}>
-									<Card
-										hoverable
-										cover={
-											<div
-												style={{
-													background: course.gradient,
-													height: '100px',
-													borderRadius: '8px 8px 0 0',
-													display: 'flex',
-													alignItems: 'center',
-													justifyContent: 'center',
-												}}
+					{proCourses.length > 0 && (
+						<div style={{ padding: '40px 0px' }}>
+							<Title level={2}>Khóa học Pro mới</Title>
+							<Row gutter={[16, 16]} justify='start'>
+								{proCourses.slice(0, 6).map((course, index) => (
+									<Col xs={24} sm={12} md={8} key={course.id}>
+										<Link to={`/khoa-hoc/${course.id}`}>
+											<Card
+												hoverable
+												cover={
+													<div style={{ position: 'relative', height: '225px', overflow: 'hidden' }}>
+														<img
+															src={course.thumbnail}
+															alt={course.title}
+															style={{
+																width: '100%',
+																height: '100%',
+																objectFit: 'cover',
+																borderRadius: '8px 8px 0 0',
+															}}
+														/>
+														<div
+															style={{
+																position: 'absolute',
+																bottom: 0,
+																left: 0,
+																right: 0,
+																background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+																padding: '20px 15px 15px',
+																color: 'white',
+															}}
+														>
+															<Title level={4} style={{ color: '#fff', margin: 0, fontSize: '16px' }}>
+																{course.title}
+															</Title>
+														</div>
+													</div>
+												}
 											>
-												<Title level={4} style={{ color: '#fff', margin: 0 }}>
-													{course.title}
-												</Title>
-											</div>
-										}
-									>
-										<Paragraph>{course.description}</Paragraph>
-										<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-											<div>
-												<Paragraph style={{ margin: 0, fontWeight: 'bold', color: '#ff6b6b' }}>
-													{course.price}
-												</Paragraph>
-												<Paragraph style={{ margin: 0, textDecoration: 'line-through', color: '#888' }}>
-													{course.discountedPrice}
-												</Paragraph>
-											</div>
-											<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-												<img
-													src='https://avatars.githubusercontent.com/u/146623045?v=4'
-													alt='instructor'
-													style={{ width: '24px', borderRadius: '50%' }}
-												/>
-												<Paragraph style={{ margin: 0 }}>{course.instructor}</Paragraph>
-											</div>
-										</div>
-										<div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-											<Paragraph style={{ margin: 0, color: '#888' }}>{course.students}</Paragraph>
-											<Paragraph style={{ margin: 0, color: '#888' }}>{course.duration}</Paragraph>
-										</div>
-									</Card>
-								</Col>
-							))}
-						</Row>
-					</div>
+												<Paragraph ellipsis={{ rows: 2 }}>{course.description}</Paragraph>
+												<div
+													style={{
+														display: 'flex',
+														justifyContent: 'space-between',
+														alignItems: 'center',
+														marginBottom: '12px',
+													}}
+												>
+													<div>
+														<Paragraph
+															style={{
+																margin: 0,
+																fontWeight: 'bold',
+																color: '#ff6b6b',
+																fontSize: '16px',
+															}}
+														>
+															{formatPrice(course.price)}
+														</Paragraph>
+														{course.certification_price && (
+															<Paragraph
+																style={{
+																	margin: 0,
+																	color: '#888',
+																	fontSize: '12px',
+																}}
+															>
+																Chứng chỉ: {formatPrice(course.certification_price)}
+															</Paragraph>
+														)}
+													</div>
+													<div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+														<StarOutlined style={{ color: '#faad14' }} />
+														<span>{course.avg_rating || 'N/A'}</span>
+													</div>
+												</div>
+												<div
+													style={{
+														display: 'flex',
+														justifyContent: 'space-between',
+														color: '#888',
+														fontSize: '12px',
+													}}
+												>
+													<span>
+														<UserOutlined /> {formatNumber(course.enrolled_count)} học viên
+													</span>
+													<span>Mã: {course.course_code}</span>
+												</div>
+											</Card>
+										</Link>
+									</Col>
+								))}
+							</Row>
+						</div>
+					)}
 
 					{/* Free Courses Section */}
-					<div style={{ padding: '40px 0px' }}>
-						<Title level={2}>Khóa học hoàn thành phí</Title>
-						<Row gutter={[16, 16]} justify='start'>
-							{freeCourses.map((course, index) => (
-								<Col xs={24} sm={12} md={8} lg={6} key={index}>
-									<Card
-										hoverable
-										cover={
-											<div
-												style={{
-													background: course.gradient,
-													height: '100px',
-													borderRadius: '8px 8px 0 0',
-													display: 'flex',
-													alignItems: 'center',
-													justifyContent: 'center',
-												}}
+					{freeCourses.length > 0 && (
+						<div style={{ padding: '40px 0px' }}>
+							<Title level={2}>Khóa học miễn phí</Title>
+							<Row gutter={[16, 16]} justify='start'>
+								{freeCourses.slice(0, 8).map((course, index) => (
+									<Col xs={24} sm={12} md={8} lg={6} key={course.id}>
+										<Link to={`/khoa-hoc/${course.id}`}>
+											{/* Thêm Link để chuyển hướng */}
+											<Card
+												hoverable
+												cover={
+													<div style={{ position: 'relative', height: '169px', overflow: 'hidden' }}>
+														<img
+															src={course.thumbnail}
+															alt={course.title}
+															style={{
+																width: '100%',
+																height: '100%',
+																objectFit: 'cover',
+																borderRadius: '8px 8px 0 0',
+															}}
+														/>
+														<div
+															style={{
+																position: 'absolute',
+																bottom: 0,
+																left: 0,
+																right: 0,
+																background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+																padding: '15px 10px 10px',
+																color: 'white',
+															}}
+														>
+															<Title level={5} style={{ color: '#fff', margin: 0, fontSize: '14px' }}>
+																{course.title}
+															</Title>
+														</div>
+													</div>
+												}
 											>
-												<Title level={4} style={{ color: '#fff', margin: 0 }}>
-													{course.title}
-												</Title>
-											</div>
-										}
-									>
-										<Paragraph>{course.description}</Paragraph>
-										<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-											<Paragraph style={{ margin: 0, color: '#888' }}>{course.students} học viên</Paragraph>
-											<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-												<img
-													src='https://avatars.githubusercontent.com/u/146623045?v=4'
-													alt='instructor'
-													style={{ width: '24px', borderRadius: '50%' }}
-												/>
-												<Paragraph style={{ margin: 0 }}>{course.instructor}</Paragraph>
-											</div>
-										</div>
-									</Card>
-								</Col>
-							))}
-						</Row>
-					</div>
+												<Paragraph ellipsis={{ rows: 2 }}>{course.description}</Paragraph>
+												<div
+													style={{
+														display: 'flex',
+														justifyContent: 'space-between',
+														alignItems: 'center',
+													}}
+												>
+													<Paragraph style={{ margin: 0, color: '#888' }}>
+														{formatNumber(course.enrolled_count)} học viên
+													</Paragraph>
+													<div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+														<StarOutlined style={{ color: '#faad14' }} />
+														<span style={{ fontSize: '12px' }}>{course.avg_rating || 'N/A'}</span>
+													</div>
+												</div>
+											</Card>
+										</Link>
+									</Col>
+								))}
+							</Row>
+						</div>
+					)}
 
 					{/* Featured Articles Section */}
-					<div style={{ padding: '40px 0px' }}>
-						<Title level={2}>Bài viết nổi bật</Title>
-						<Row gutter={[16, 16]} justify='start'>
-							{articles.map((article, index) => (
-								<Col xs={24} sm={12} md={8} lg={6} key={index}>
-									<Card
-										hoverable
-										cover={<img alt={article.title} src={article.image} style={{ borderRadius: '8px 8px 0 0' }} />}
-									>
-										<Title level={5}>{article.title}</Title>
-										<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-											<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+					{blogPosts.length > 0 && (
+						<div style={{ padding: '40px 0px' }}>
+							<Title level={2}>Bài viết nổi bật</Title>
+							<Row gutter={[16, 16]} justify='start'>
+								{blogPosts.slice(0, 8).map((article, index) => (
+									<Col xs={24} sm={12} md={8} lg={6} key={article.id}>
+										<Card
+											hoverable
+											cover={
 												<img
-													src='https://avatars.githubusercontent.com/u/146623045?v=4'
-													alt='author'
-													style={{ width: '24px', borderRadius: '50%' }}
+													alt={article.title}
+													src={
+														article.thumbnail ||
+														'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+													}
+													style={{
+														borderRadius: '8px 8px 0 0',
+														height: '180px',
+														objectFit: 'cover',
+													}}
 												/>
-												<Paragraph style={{ margin: 0 }}>{article.author}</Paragraph>
+											}
+										>
+											<Title level={5} ellipsis={{ rows: 2 }}>
+												{article.title}
+											</Title>
+											<Paragraph ellipsis={{ rows: 2 }} style={{ color: '#666' }}>
+												{article.excerpt}
+											</Paragraph>
+											<div
+												style={{
+													display: 'flex',
+													justifyContent: 'space-between',
+													alignItems: 'center',
+													marginTop: '12px',
+												}}
+											>
+												<div
+													style={{
+														display: 'flex',
+														alignItems: 'center',
+														gap: '8px',
+													}}
+												>
+													<img
+														src='https://avatars.githubusercontent.com/u/146623045?v=4'
+														alt='author'
+														style={{ width: '24px', borderRadius: '50%' }}
+													/>
+													<span style={{ fontSize: '12px', color: '#666' }}>Tác giả</span>
+												</div>
+												<span style={{ fontSize: '12px', color: '#888' }}>
+													{new Date(article.published_at).toLocaleDateString('vi-VN')}
+												</span>
 											</div>
-											<Paragraph style={{ margin: 0, color: '#888' }}>
-												<EyeOutlined /> {article.views}
-											</Paragraph>
-										</div>
-									</Card>
-								</Col>
-							))}
-						</Row>
-					</div>
-
-					<div style={{ padding: '40px 0px' }}>
-						<Title level={2}>Videos nổi bật</Title>
-						<Row gutter={[16, 16]} justify='start'>
-							{videos.map((video, index) => (
-								<Col xs={24} sm={12} md={8} lg={6} key={index}>
-									<Card
-										hoverable
-										cover={<img alt={video.title} src={video.image} style={{ borderRadius: '8px 8px 0 0' }} />}
-									>
-										<Title level={5}>{video.title}</Title>
-										<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-											<Paragraph style={{ margin: 0, color: '#888' }}>
-												<EyeOutlined /> {video.views}
-											</Paragraph>
-											<Paragraph style={{ margin: 0, color: '#888' }}>
-												<ClockCircleOutlined /> {video.duration}
-											</Paragraph>
-										</div>
-									</Card>
-								</Col>
-							))}
-						</Row>
-					</div>
+										</Card>
+									</Col>
+								))}
+							</Row>
+						</div>
+					)}
 				</Content>
 			</Layout>
 			<Footer />

@@ -33,6 +33,13 @@
 		layout: false,
 	},
 	{
+		path: '/khoa-hoc/:id',
+		name: 'Khóa Học',
+		component: './Client/KhoaHoc',
+		icon: 'HomeOutlined',
+		layout: false,
+	},
+	{
 		path: '/trang-ca-nhan',
 		name: 'Trang Cá Nhân',
 		component: './Client/TrangCaNhan',
