@@ -20,13 +20,13 @@ import { resetFieldsForm } from '@/utils/utils';
 import moment from 'moment';
 import axios from 'axios';
 import CourseSelect from './Select';
+import { ipLocal } from '@/utils/ip';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 interface CourseFormProps {
 	title?: string;
-	hideFooter?: boolean;
 }
 
 interface Category {
@@ -34,7 +34,7 @@ interface Category {
 	name: string;
 }
 
-const CourseForm: React.FC<CourseFormProps> = ({ title = 'khóa học', hideFooter, ...props }) => {
+const CourseForm: React.FC<CourseFormProps> = ({ title = 'khóa học', ...props }) => {
 	const { record, setVisibleForm, edit, postModel, putModel, visibleForm } = useModel('course.courses');
 	const [form] = Form.useForm();
 	const intl = useIntl();
@@ -48,7 +48,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ title = 'khóa học', hideFoot
 		const fetchCategories = async () => {
 			try {
 				setLoadingCategories(true);
-				const response = await axios.get<Category[]>('http://localhost:3000/categories');
+				const response = await axios.get<Category[]>(`${ipLocal}/categories`);
 				setCategories(response.data || []);
 			} catch (error) {
 				console.error('Error fetching categories:', error);
@@ -467,20 +467,16 @@ const CourseForm: React.FC<CourseFormProps> = ({ title = 'khóa học', hideFoot
 						</Card>
 					)}
 
-					{!hideFooter && (
-						<div className='form-actions' style={{ marginTop: 24, textAlign: 'center' }}>
-							<Space size='large'>
-								<Button loading={submitting} htmlType='submit' type='primary' size='large'>
-									{edit
-										? intl.formatMessage({ id: 'global.button.luulai' })
-										: intl.formatMessage({ id: 'global.button.themmoi' })}
-								</Button>
-								<Button onClick={handleCancel} size='large'>
-									{intl.formatMessage({ id: 'global.button.huy' })}
-								</Button>
-							</Space>
-						</div>
-					)}
+					<div className='form-actions' style={{ marginTop: 24, textAlign: 'center' }}>
+						<Space size='large'>
+							<Button loading={submitting} htmlType='submit' type='primary' size='large'>
+								{edit ? 'Lưu lại' : 'Thêm mới'}
+							</Button>
+							<Button onClick={handleCancel} size='large'>
+								Hủy
+							</Button>
+						</Space>
+					</div>
 				</Form>
 			</Card>
 		</div>

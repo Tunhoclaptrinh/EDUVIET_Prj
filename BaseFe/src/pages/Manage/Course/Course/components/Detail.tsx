@@ -35,14 +35,16 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ isVisible, onClose, onEdit,
 			title={`Chi tiết ${title}`}
 			visible={isVisible}
 			onCancel={onClose}
-			footer={[
-				<Button key='back' onClick={onClose}>
-					Đóng
-				</Button>,
-				<Button key='edit' type='primary' onClick={onEdit}>
-					Chỉnh sửa
-				</Button>,
-			]}
+			footer={
+				<div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+					<Button key='back' onClick={onClose}>
+						Đóng
+					</Button>
+					<Button key='edit' type='primary' onClick={onEdit}>
+						Chỉnh sửa
+					</Button>
+				</div>
+			}
 			width={900}
 		>
 			<Descriptions column={2} bordered>

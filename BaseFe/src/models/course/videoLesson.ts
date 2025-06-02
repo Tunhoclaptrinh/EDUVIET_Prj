@@ -3,7 +3,7 @@ import { type ThongBao } from '@/services/ThongBao/typing';
 import { ipLocal } from '@/utils/ip';
 
 export default () => {
-	const objInit = useInitModel<ThongBao.TReceiver>('videoLessons', undefined, undefined, ipLocal);
+	const objInit = useInitModel<VideoLesson.IRecord>('videoLessons', undefined, undefined, ipLocal);
 
 	return {
 		...objInit,

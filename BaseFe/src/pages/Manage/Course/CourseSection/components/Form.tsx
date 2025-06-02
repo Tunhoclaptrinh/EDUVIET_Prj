@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Col, Form, Input, Row, Select, message, Space } from 'antd';
+import { Button, Card, Col, Form, Input, Row, Select, message, Space, InputNumber } from 'antd';
 import { useIntl, useModel } from 'umi';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
@@ -7,14 +7,20 @@ import { resetFieldsForm } from '@/utils/utils';
 const { Option } = Select;
 const { TextArea } = Input;
 
-interface CategoryFormProps {
+interface CourseSectionFormProps {
 	title?: string;
 }
 
-const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...props }) => {
-	const { record, setVisibleForm, edit, postModel, putModel, visibleForm, danhSach } = useModel('category');
+const CourseSectionForm: React.FC<CourseSectionFormProps> = ({ title = 'chương học', ...props }) => {
+	const { record, setVisibleForm, edit, postModel, putModel, visibleForm } = useModel('course.courseSection');
+	const { danhSach: courseList, getAllModel: getAllCourses } = useModel('course.courses');
 	const [form] = Form.useForm();
 	const [submitting, setSubmitting] = useState(false);
+
+	// Load courses when component mounts
+	useEffect(() => {
+		getAllCourses();
+	}, [getAllCourses]);
 
 	// Reset form and populate data when opening
 	useEffect(() => {
@@ -29,8 +35,16 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 	}, [record?.id, visibleForm, form]);
 
 	const validateFormData = (values: any): string | null => {
-		if (!values.name?.trim()) {
-			return 'Vui lòng nhập tên danh mục';
+		if (!values.title?.trim()) {
+			return 'Vui lòng nhập tiêu đề chương';
+		}
+
+		if (!values.course_id) {
+			return 'Vui lòng chọn khóa học';
+		}
+
+		if (!values.order_number || values.order_number < 1) {
+			return 'Vui lòng nhập thứ tự hợp lệ (từ 1 trở lên)';
 		}
 
 		return null;
@@ -49,12 +63,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 
 			// Prepare base submit data
 			const baseSubmitData = {
-				name: values.name?.trim(),
+				title: values.title?.trim(),
 				description: values.description?.trim() || '',
-				parent_category_id: values.parent_category_id || null,
+				course_id: values.course_id,
+				order_number: values.order_number,
 			};
 
-			let submitData: Category.IRecord;
+			let submitData: CourseSection.IRecord;
 			let result;
 
 			if (edit) {
@@ -69,13 +84,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 				result = await putModel(record.id, submitData);
 			} else {
 				// For creating: only include necessary fields, no ID
-				submitData = baseSubmitData as Category.IRecord;
+				submitData = baseSubmitData as CourseSection.IRecord;
 				result = await postModel(submitData);
 			}
 
 			// Check if the operation was successful
 			if (result) {
-				message.success(`${edit ? 'Cập nhật' : 'Thêm mới'} danh mục thành công`);
+				message.success(`${edit ? 'Cập nhật' : 'Thêm mới'} chương học thành công`);
 				setVisibleForm(false);
 				resetFieldsForm(form);
 			} else {
@@ -84,7 +99,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 		} catch (error: any) {
 			console.error('Form submission error:', error);
 			const errorMessage =
-				error?.response?.data?.message || error?.message || `${edit ? 'Cập nhật' : 'Thêm mới'} danh mục thất bại`;
+				error?.response?.data?.message || error?.message || `${edit ? 'Cập nhật' : 'Thêm mới'} chương học thất bại`;
 			message.error(errorMessage);
 		} finally {
 			setSubmitting(false);
@@ -96,56 +111,50 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 		resetFieldsForm(form);
 	};
 
-	// Get parent categories (exclude current category and its children when editing)
-	const getParentCategoryOptions = () => {
-		if (!danhSach) return [];
-
-		let availableCategories = danhSach;
-
-		// When editing, exclude current category to prevent circular reference
-		if (edit && record?.id) {
-			availableCategories = danhSach.filter((cat: Category.IRecord) => cat.id !== record.id);
-		}
-
-		return availableCategories;
-	};
-
 	return (
 		<div>
 			<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title}`}>
 				<Form form={form} layout='vertical' onFinish={onFinish} autoComplete='off'>
 					{/* Thông tin cơ bản */}
-					<Card type='inner' title='📋 Thông tin cơ bản' style={{ marginBottom: 16 }}>
+					<Card type='inner' title='📚 Thông tin cơ bản' style={{ marginBottom: 16 }}>
 						<Row gutter={[16, 0]}>
 							<Col span={24}>
 								<Form.Item
-									label='Tên danh mục'
-									name='name'
-									rules={[...rules.required, { max: 200, message: 'Tên danh mục tối đa 200 ký tự' }]}
+									label='Tiêu đề chương'
+									name='title'
+									rules={[...rules.required, { max: 200, message: 'Tiêu đề chương tối đa 200 ký tự' }]}
 								>
-									<Input placeholder='Nhập tên danh mục' maxLength={200} />
+									<Input placeholder='Nhập tiêu đề chương' maxLength={200} />
 								</Form.Item>
 							</Col>
 						</Row>
 
 						<Row gutter={[16, 0]}>
-							<Col span={24}>
-								<Form.Item label='Danh mục cha' name='parent_category_id'>
+							<Col span={12}>
+								<Form.Item label='Khóa học' name='course_id' rules={[...rules.required]}>
 									<Select
-										placeholder='Chọn danh mục cha (tùy chọn)'
-										allowClear
+										placeholder='Chọn khóa học'
 										showSearch
 										optionFilterProp='children'
 										filterOption={(input, option) =>
 											(option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
 										}
 									>
-										{getParentCategoryOptions().map((category: Category.IRecord) => (
-											<Option key={category.id} value={category.id}>
-												{category.name}
+										{courseList?.map((course: any) => (
+											<Option key={course.id} value={course.id}>
+												{course.title || course.name}
 											</Option>
 										))}
 									</Select>
+								</Form.Item>
+							</Col>
+							<Col span={12}>
+								<Form.Item
+									label='Thứ tự'
+									name='order_number'
+									rules={[...rules.required, { type: 'number', min: 1, message: 'Thứ tự phải từ 1 trở lên' }]}
+								>
+									<InputNumber placeholder='Nhập thứ tự' min={1} style={{ width: '100%' }} />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -153,11 +162,11 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 						<Row gutter={[16, 0]}>
 							<Col span={24}>
 								<Form.Item
-									label='Mô tả danh mục'
+									label='Mô tả chương'
 									name='description'
 									rules={[{ max: 1000, message: 'Mô tả tối đa 1000 ký tự' }]}
 								>
-									<TextArea rows={4} placeholder='Nhập mô tả chi tiết về danh mục' showCount maxLength={1000} />
+									<TextArea rows={4} placeholder='Nhập mô tả chi tiết về chương học' showCount maxLength={1000} />
 								</Form.Item>
 							</Col>
 						</Row>
@@ -179,4 +188,4 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ title = 'danh mục', ...pr
 	);
 };
 
-export default CategoryForm;
+export default CourseSectionForm;

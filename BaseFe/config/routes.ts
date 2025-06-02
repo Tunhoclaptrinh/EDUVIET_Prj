@@ -66,6 +66,14 @@
 				icon: 'HomeOutlined',
 				layout: false,
 			},
+			// route cho trang bài học
+			{
+				path: '/public/khoa-hoc/:courseId/bai-hoc/:lessonId?',
+				name: 'Bài Học',
+				component: './Client/BaiHoc',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
 		],
 	},
 
@@ -98,8 +106,22 @@
 			{
 				path: '/course/courses',
 				name: 'Các khóa học',
-				component: './Manage/Course',
-				icon: 'NotificationOutlined',
+				component: './Manage/Course/Course',
+			},
+			{
+				path: '/course/section',
+				name: 'Các chương',
+				component: './Manage/Course/CourseSection',
+			},
+			{
+				path: '/course/lesson',
+				name: 'Các bài học',
+				component: './Manage/Course/Lesson',
+			},
+			{
+				path: '/course/videolesson',
+				name: 'Bài học video',
+				component: './Manage/Course/VideoLesson',
 			},
 		],
 	},

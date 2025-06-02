@@ -287,7 +287,7 @@
       "max_learners": 200,
       "commission_rate": 0.6,
       "has_certification": true,
-      "status": "pending_approval",
+      "status": "approved",
       "thumbnail": "https://tulieuvankien.dangcongsan.vn/Uploads/2019/9/6/16/loi-thoi.jpg",
       "id": "s",
       "created_at": "",
@@ -415,22 +415,24 @@
   ],
   "videoLessons": [
     {
+      "lesson_id": "1",
+      "video_url": "https://youtu.be/9kzE8isXlQY?si=8KW4lGBV4Vbv84tR",
+      "embed_code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/9kzE8isXlQY?si=CP5HerL2Hn8nvBMT\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+      "transcript": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/9kzE8isXlQY?si=CP5HerL2Hn8nvBMT\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+      "prevent_skipping": false,
+      "encryption_key": null,
       "id": "1",
-      "lesson_id": 1,
-      "video_url": "https://storage.eduviet.com/videos/react-intro.mp4",
-      "embed_code": "<iframe src=\"https://youtube.com/embed/abc123\"></iframe>",
-      "transcript": "Chào mừng bạn đến với khóa học React...",
-      "prevent_skipping": true,
-      "encryption_key": "enc_key_123456"
+      "updated_at": "2025-06-02T12:09:51.616Z"
     },
     {
-      "id": "2",
       "lesson_id": 2,
       "video_url": "https://storage.eduviet.com/videos/nodejs-install.mp4",
-      "embed_code": "<iframe src=\"https://youtube.com/embed/def456\"></iframe>",
+      "embed_code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/bABq5jX3HPA?si=75oKZ0GQjAFZAHUi\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
       "transcript": "Trong bài học này chúng ta sẽ cài đặt Node.js...",
       "prevent_skipping": true,
-      "encryption_key": "enc_key_234567"
+      "encryption_key": "enc_key_234567",
+      "id": "2",
+      "updated_at": "2025-06-02T12:12:14.083Z"
     },
     {
       "id": "3",
@@ -451,13 +453,14 @@
       "encryption_key": "enc_key_456789"
     },
     {
-      "id": "5",
       "lesson_id": 6,
       "video_url": "https://storage.eduviet.com/videos/english-greetings.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/mno345\"></iframe>",
       "transcript": "Good morning! Hello! Hi! These are common greetings...",
       "prevent_skipping": false,
-      "encryption_key": "enc_key_567890"
+      "encryption_key": "enc_key_567890",
+      "id": "5",
+      "updated_at": "2025-06-02T10:28:12.838Z"
     }
   ],
   "articleLessons": [

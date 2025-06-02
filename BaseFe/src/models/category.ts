@@ -3,7 +3,7 @@ import { type ThongBao } from '@/services/ThongBao/typing';
 import { ipLocal } from '@/utils/ip';
 
 export default () => {
-	const objInit = useInitModel<ThongBao.TReceiver>('categories', undefined, undefined, ipLocal);
+	const objInit = useInitModel<Category.IRecord>('categories', undefined, undefined, ipLocal);
 
 	return {
 		...objInit,

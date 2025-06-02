@@ -2,15 +2,21 @@ import React from 'react';
 import { Modal, Descriptions, Button, Tag } from 'antd';
 import moment from 'moment';
 
-interface CategoryDetailProps {
+interface CourseSectionDetailProps {
 	isVisible: boolean;
 	onClose: () => void;
 	onEdit: () => void;
-	record?: Category.IRecord;
+	record?: CourseSection.IRecord;
 	title?: string;
 }
 
-const CategoryDetail: React.FC<CategoryDetailProps> = ({ isVisible, onClose, onEdit, record, title = 'danh mục' }) => {
+const CourseSectionDetail: React.FC<CourseSectionDetailProps> = ({
+	isVisible,
+	onClose,
+	onEdit,
+	record,
+	title = 'chương học',
+}) => {
 	if (!record) return null;
 
 	return (
@@ -31,20 +37,20 @@ const CategoryDetail: React.FC<CategoryDetailProps> = ({ isVisible, onClose, onE
 			width={800}
 		>
 			<Descriptions column={2} bordered>
-				<Descriptions.Item label='Tên danh mục' span={2}>
-					<strong style={{ fontSize: 18 }}>{record.name}</strong>
+				<Descriptions.Item label='Tiêu đề chương' span={2}>
+					<strong style={{ fontSize: 18 }}>{record.title}</strong>
 				</Descriptions.Item>
 
 				<Descriptions.Item label='ID' span={2}>
 					<Tag color='blue'>{record.id}</Tag>
 				</Descriptions.Item>
 
-				<Descriptions.Item label='Danh mục cha' span={2}>
-					{record.parent_category_id ? (
-						<Tag color='green'>{record.parent_category_id}</Tag>
-					) : (
-						<span style={{ color: '#999' }}>Không có danh mục cha</span>
-					)}
+				<Descriptions.Item label='Khóa học'>
+					<Tag color='green'>{record.course_id}</Tag>
+				</Descriptions.Item>
+
+				<Descriptions.Item label='Thứ tự'>
+					<Tag color='orange'>{record.order_number}</Tag>
 				</Descriptions.Item>
 
 				<Descriptions.Item label='Mô tả' span={2}>
@@ -66,4 +72,4 @@ const CategoryDetail: React.FC<CategoryDetailProps> = ({ isVisible, onClose, onE
 	);
 };
 
-export default CategoryDetail;
+export default CourseSectionDetail;
