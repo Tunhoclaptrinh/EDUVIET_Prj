@@ -79,7 +79,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 		rightContentRender: () => <RightContent />,
 		disableContentMargin: false,
 
-		footerRender: () => <Footer />,
+		// footerRender: () => <Footer />,
 
 		onPageChange: () => {
 			if (initialState?.currentUser) {

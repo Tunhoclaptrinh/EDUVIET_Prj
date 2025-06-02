@@ -18,48 +18,57 @@
 
 	///////////////////////////////////
 	// DEFAULT MENU
+
 	{
-		path: '/trang-chu',
-		name: 'Trang Chủ',
-		component: './Client/TrangChu',
-		icon: 'HomeOutlined',
-		layout: false,
+		path: '/public',
+		name: 'Trang Public',
+		icon: 'LayoutOutlined',
+		routes: [
+			{
+				path: '/public/trang-chu',
+				name: 'Trang Chủ',
+				component: './Client/TrangChu',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+			{
+				path: '/public/khoa-hoc',
+				name: 'Khóa Học',
+				component: './Client/KhoaHoc',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+			{
+				path: '/public/khoa-hoc/:id',
+				name: 'Khóa Học',
+				component: './Client/KhoaHoc',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+			{
+				path: '/public/trang-ca-nhan',
+				name: 'Trang Cá Nhân',
+				component: './Client/TrangCaNhan',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+			{
+				path: '/public/bai-viet',
+				name: 'Bài Viết',
+				component: './Client/BaiViet',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+			{
+				path: '/public/bai-hoc',
+				name: 'Bài Học',
+				component: './Client/BaiHoc',
+				icon: 'HomeOutlined',
+				layout: false,
+			},
+		],
 	},
-	{
-		path: '/khoa-hoc',
-		name: 'Khóa Học',
-		component: './Client/KhoaHoc',
-		icon: 'HomeOutlined',
-		layout: false,
-	},
-	{
-		path: '/khoa-hoc/:id',
-		name: 'Khóa Học',
-		component: './Client/KhoaHoc',
-		icon: 'HomeOutlined',
-		layout: false,
-	},
-	{
-		path: '/trang-ca-nhan',
-		name: 'Trang Cá Nhân',
-		component: './Client/TrangCaNhan',
-		icon: 'HomeOutlined',
-		layout: false,
-	},
-	{
-		path: '/bai-viet',
-		name: 'Bài Viết',
-		component: './Client/BaiViet',
-		icon: 'HomeOutlined',
-		layout: false,
-	},
-	{
-		path: '/bai-hoc',
-		name: 'Bài Học',
-		component: './Client/BaiHoc',
-		icon: 'HomeOutlined',
-		layout: false,
-	},
+
 	{
 		path: '/gioi-thieu',
 		name: 'About',
@@ -80,6 +89,26 @@
 	// 		},
 	// 	],
 	// },
+
+	{
+		path: '/course',
+		name: 'Quản lý khóa học',
+		icon: 'LayoutOutlined',
+		routes: [
+			{
+				path: '/course/courses',
+				name: 'Các khóa học',
+				component: './Manage/Course',
+				icon: 'NotificationOutlined',
+			},
+		],
+	},
+	{
+		path: '/category',
+		name: 'QL danh mục',
+		component: './Manage/Category',
+		icon: 'NotificationOutlined',
+	},
 
 	{
 		path: '/notification',

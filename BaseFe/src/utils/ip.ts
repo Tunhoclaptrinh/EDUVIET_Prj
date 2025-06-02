@@ -9,6 +9,8 @@ const ip3 = ipRoot + 'slink'; // ip dev
 const ipNotif = ipRoot + 'notification'; // ip dev
 const ipSlink = ipRoot + 'slink'; // ip dev
 
+const ipLocal = 'http://localhost:3000';
+
 const currentRole = EModuleKey.CONNECT;
 const oneSignalRole = EModuleKey.CONNECT;
 
@@ -24,6 +26,7 @@ const oneSignalClient = APP_CONFIG_ONE_SIGNAL_ID;
 
 export {
 	ip3,
+	ipLocal,
 	ipNotif,
 	ipSlink,
 	currentRole,

@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "admin@eduviet.com",
       "phone_number": "0901234567",
       "password_hash": "hashed_password_here",
@@ -19,7 +19,7 @@
       "ui_theme": "light"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "instructor@eduviet.com",
       "phone_number": "0912345678",
       "password_hash": "hashed_password_here",
@@ -37,7 +37,7 @@
       "ui_theme": "dark"
     },
     {
-      "id": 3,
+      "id": "3",
       "email": "instructor2@eduviet.com",
       "phone_number": "0913456789",
       "password_hash": "hashed_password_here",
@@ -55,7 +55,7 @@
       "ui_theme": "light"
     },
     {
-      "id": 4,
+      "id": "4",
       "email": "learner@gmail.com",
       "phone_number": "0923456789",
       "password_hash": "hashed_password_here",
@@ -73,7 +73,7 @@
       "ui_theme": "light"
     },
     {
-      "id": 5,
+      "id": "5",
       "email": "learner2@gmail.com",
       "phone_number": "0934567890",
       "password_hash": "hashed_password_here",
@@ -93,7 +93,7 @@
   ],
   "userSettings": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 1,
       "notification_email": true,
       "notification_platform": true,
@@ -101,7 +101,7 @@
       "prevent_video_skipping": false
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 2,
       "notification_email": true,
       "notification_platform": true,
@@ -109,7 +109,7 @@
       "prevent_video_skipping": false
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 3,
       "notification_email": true,
       "notification_platform": false,
@@ -117,7 +117,7 @@
       "prevent_video_skipping": false
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 4,
       "notification_email": true,
       "notification_platform": true,
@@ -125,7 +125,7 @@
       "prevent_video_skipping": true
     },
     {
-      "id": 5,
+      "id": "5",
       "user_id": 5,
       "notification_email": false,
       "notification_platform": true,
@@ -135,59 +135,71 @@
   ],
   "categories": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Công nghệ thông tin",
       "description": "Các khóa học về lập trình, phát triển phần mềm, và công nghệ.",
       "parent_category_id": null
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Ngoại ngữ",
       "description": "Các khóa học ngôn ngữ và giao tiếp đa văn hóa.",
       "parent_category_id": null
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Lập trình Web",
       "description": "Các khóa học về phát triển website, frontend và backend.",
       "parent_category_id": 1
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Tiếng Anh",
       "description": "Các khóa học tiếng Anh từ cơ bản đến nâng cao.",
       "parent_category_id": 2
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Kinh doanh",
       "description": "Các khóa học về quản lý, marketing và khởi nghiệp.",
       "parent_category_id": null
+    },
+    {
+      "id": "d96c",
+      "name": "Cơ bản",
+      "description": "Các môn khoa học tự nhiên, khoa học xã hội cơ bản",
+      "parent_category_id": null
+    },
+    {
+      "id": "69b4",
+      "name": "Triết",
+      "description": "",
+      "parent_category_id": "d96c"
     }
   ],
   "courses": [
     {
-      "id": 1,
       "course_code": "WEB001",
       "title": "Lập trình Web với ReactJS",
       "description": "Khóa học toàn diện về React để xây dựng Single Page Application hiện đại.",
+      "published_at": "2025-02-05",
       "price": 1200000,
-      "instructor_id": 2,
       "category_id": 3,
-      "thumbnail": "https://files.fullstack.edu.vn/f8-prod/courses/13/13.png",
-      "status": "approved",
-      "created_at": "2025-01-10T00:00:00Z",
-      "updated_at": "2025-02-01T00:00:00Z",
-      "published_at": "2025-02-05T00:00:00Z",
+      "instructor": "Tuấn",
       "max_learners": 500,
+      "commission_rate": 0.7,
       "has_certification": true,
       "certification_price": 300000,
-      "commission_rate": 0.7,
+      "status": "approved",
+      "thumbnail": "https://files.fullstack.edu.vn/f8-prod/courses/13/13.png",
+      "id": "1",
+      "created_at": "2025-01-10T00:00:00Z",
+      "updated_at": "2025-02-01T00:00:00Z",
       "enrolled_count": 157,
       "avg_rating": 4.7
     },
     {
-      "id": 2,
+      "id": "2",
       "course_code": "ENG001",
       "title": "Tiếng Anh giao tiếp cơ bản",
       "description": "Khóa học giúp bạn tự tin giao tiếp tiếng Anh trong tình huống hàng ngày.",
@@ -207,7 +219,7 @@
       "avg_rating": 4.5
     },
     {
-      "id": 3,
+      "id": "3",
       "course_code": "BIZ001",
       "title": "Khởi nghiệp kinh doanh online",
       "description": "Hướng dẫn từng bước để xây dựng và phát triển doanh nghiệp trực tuyến.",
@@ -227,77 +239,94 @@
       "avg_rating": 4.8
     },
     {
-      "id": 4,
       "course_code": "WEB002",
       "title": "Lập trình Backend với Node.js",
       "description": "Xây dựng API và ứng dụng server-side với Node.js và Express.",
+      "published_at": "2025-03-20",
       "price": 1400000,
-      "instructor_id": 2,
       "category_id": 3,
-      "thumbnail": "https://cdn-main.28tech.com.vn/media/anh-khoa-hoc/anh_dai_dien_khoa_hoc/l%E1%BA%ADp%20tr%C3%ACnh%20%20web%20backend%20nodejs.png",
-      "status": "approved",
-      "created_at": "2025-02-20T00:00:00Z",
-      "updated_at": "2025-03-15T00:00:00Z",
-      "published_at": "2025-03-20T00:00:00Z",
+      "instructor": "Tuấn Tiến",
       "max_learners": 400,
-      "has_certification": true,
-      "certification_price": 350000,
       "commission_rate": 0.7,
-      "enrolled_count": 102,
-      "avg_rating": 4.6
+      "has_certification": true,
+      "status": "approved",
+      "thumbnail": "https://itviec.com/blog/wp-content/uploads/2024/08/nodejs-backend-thumbnail-vippro.jpg",
+      "id": "4",
+      "created_at": "",
+      "updated_at": "",
+      "enrolled_count": 0,
+      "avg_rating": null
     },
     {
-      "id": 5,
       "course_code": "ENG002",
       "title": "Tiếng Anh IELTS 7.0+",
       "description": "Chiến lược và kỹ thuật làm bài thi IELTS đạt điểm cao.",
-      "price": 2000000,
-      "instructor_id": 3,
-      "category_id": 4,
-      "thumbnail": "https://aten.edu.vn/wp-content/uploads/2022/12/bat-mi-kinh-nghiem-tu-hoc-ielts-7.0-trong-3-thang-so-1.png",
-      "status": "pending_approval",
-      "created_at": "2025-04-01T00:00:00Z",
-      "updated_at": "2025-04-10T00:00:00Z",
       "published_at": null,
+      "price": 2000000,
+      "category_id": 1,
+      "instructor": "Tuấn",
       "max_learners": 200,
-      "has_certification": true,
-      "certification_price": 500000,
       "commission_rate": 0.8,
+      "has_certification": true,
+      "status": "approved",
+      "thumbnail": "https://flyer.vn/wp-content/uploads/2024/04/lo-trinh-hoc-ielts-tu-0-den-7.0-1024x576.png?x86689",
+      "id": "5",
+      "created_at": "",
+      "updated_at": "",
+      "enrolled_count": 0,
+      "avg_rating": null
+    },
+    {
+      "course_code": "INT001",
+      "title": "Triết học Mác - Lênin",
+      "description": "Triết học Marx-Lenin (phiên âm tiếng Việt: Triết học Mác - Lênin) hay học thuyết Marx-Lenin là một trong ba bộ phận cấu thành của chủ nghĩa Marx-Lenin, được ...",
+      "published_at": "2025-06-12",
+      "price": 0,
+      "category_id": "69b4",
+      "instructor": "Nguyễn",
+      "max_learners": 200,
+      "commission_rate": 0.6,
+      "has_certification": true,
+      "status": "pending_approval",
+      "thumbnail": "https://tulieuvankien.dangcongsan.vn/Uploads/2019/9/6/16/loi-thoi.jpg",
+      "id": "s",
+      "created_at": "",
+      "updated_at": "",
       "enrolled_count": 0,
       "avg_rating": null
     }
   ],
   "courseSections": [
     {
-      "id": 1,
+      "id": "1",
       "course_id": 1,
       "title": "Giới thiệu React và cài đặt môi trường",
       "description": "Làm quen với React và cài đặt các công cụ cần thiết.",
       "order_number": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "course_id": 1,
       "title": "Component và Props",
       "description": "Hiểu về component và cách truyền dữ liệu qua props.",
       "order_number": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "course_id": 1,
       "title": "State và Lifecycle",
       "description": "Quản lý trạng thái và vòng đời của component.",
       "order_number": 3
     },
     {
-      "id": 4,
+      "id": "4",
       "course_id": 2,
       "title": "Chào hỏi và giới thiệu bản thân",
       "description": "Học cách chào hỏi và giới thiệu bản thân bằng tiếng Anh.",
       "order_number": 1
     },
     {
-      "id": 5,
+      "id": "5",
       "course_id": 2,
       "title": "Giao tiếp hàng ngày",
       "description": "Các tình huống giao tiếp thường gặp trong cuộc sống.",
@@ -306,7 +335,7 @@
   ],
   "lessons": [
     {
-      "id": 1,
+      "id": "1",
       "section_id": 1,
       "title": "Giới thiệu về React",
       "description": "Tổng quan về React và ưu điểm của nó trong phát triển web.",
@@ -319,7 +348,7 @@
       "updated_at": "2025-01-15T00:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "section_id": 1,
       "title": "Cài đặt Node.js và npm",
       "description": "Hướng dẫn cài đặt Node.js và npm để bắt đầu với React.",
@@ -332,7 +361,7 @@
       "updated_at": "2025-01-16T00:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "section_id": 1,
       "title": "Tạo dự án React đầu tiên",
       "description": "Tạo và chạy dự án React đầu tiên của bạn với Create React App.",
@@ -345,7 +374,7 @@
       "updated_at": "2025-01-17T00:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "section_id": 1,
       "title": "Kiểm tra kiến thức",
       "description": "Trắc nghiệm kiểm tra kiến thức về phần giới thiệu React.",
@@ -358,7 +387,7 @@
       "updated_at": "2025-01-18T00:00:00Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "section_id": 2,
       "title": "React Component là gì?",
       "description": "Hiểu về React Component và các loại component.",
@@ -371,7 +400,7 @@
       "updated_at": "2025-01-20T00:00:00Z"
     },
     {
-      "id": 6,
+      "id": "6",
       "section_id": 4,
       "title": "Cách chào hỏi cơ bản",
       "description": "Học cách chào hỏi trong tiếng Anh với nhiều tình huống khác nhau.",
@@ -386,7 +415,7 @@
   ],
   "videoLessons": [
     {
-      "id": 1,
+      "id": "1",
       "lesson_id": 1,
       "video_url": "https://storage.eduviet.com/videos/react-intro.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/abc123\"></iframe>",
@@ -395,7 +424,7 @@
       "encryption_key": "enc_key_123456"
     },
     {
-      "id": 2,
+      "id": "2",
       "lesson_id": 2,
       "video_url": "https://storage.eduviet.com/videos/nodejs-install.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/def456\"></iframe>",
@@ -404,7 +433,7 @@
       "encryption_key": "enc_key_234567"
     },
     {
-      "id": 3,
+      "id": "3",
       "lesson_id": 3,
       "video_url": "https://storage.eduviet.com/videos/first-react-app.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/ghi789\"></iframe>",
@@ -413,7 +442,7 @@
       "encryption_key": "enc_key_345678"
     },
     {
-      "id": 4,
+      "id": "4",
       "lesson_id": 5,
       "video_url": "https://storage.eduviet.com/videos/react-components.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/jkl012\"></iframe>",
@@ -422,7 +451,7 @@
       "encryption_key": "enc_key_456789"
     },
     {
-      "id": 5,
+      "id": "5",
       "lesson_id": 6,
       "video_url": "https://storage.eduviet.com/videos/english-greetings.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/mno345\"></iframe>",
@@ -433,13 +462,13 @@
   ],
   "articleLessons": [
     {
-      "id": 1,
+      "id": "1",
       "lesson_id": 7,
       "content": "# Giới thiệu về NPM\n\nNPM (Node Package Manager) là công cụ quản lý package cho JavaScript. Nó cho phép bạn cài đặt, chia sẻ và quản lý các dependencies trong dự án JavaScript của mình.\n\n## Các lệnh cơ bản\n\n- `npm init`: Khởi tạo dự án mới\n- `npm install`: Cài đặt tất cả dependencies\n- `npm install <package>`: Cài đặt package cụ thể\n\nHãy thực hành các lệnh này để làm quen với NPM trước khi bắt đầu với React.",
       "content_format": "markdown"
     },
     {
-      "id": 2,
+      "id": "2",
       "lesson_id": 8,
       "content": "<h1>Cách phát âm chuẩn trong tiếng Anh</h1><p>Phát âm đúng là yếu tố quan trọng trong giao tiếp tiếng Anh hiệu quả. Bài viết này sẽ giúp bạn nắm vững các nguyên tắc phát âm cơ bản.</p><h2>Nguyên âm và phụ âm</h2><p>Tiếng Anh có 20 nguyên âm và 24 phụ âm. Mỗi âm này có cách phát âm riêng và cần được luyện tập cẩn thận.</p>",
       "content_format": "html"
@@ -447,7 +476,7 @@
   ],
   "lessonResources": [
     {
-      "id": 1,
+      "id": "1",
       "lesson_id": 1,
       "title": "Tài liệu React chính thức",
       "description": "Tài liệu tham khảo từ trang chính thức của React",
@@ -455,7 +484,7 @@
       "resource_type": "pdf"
     },
     {
-      "id": 2,
+      "id": "2",
       "lesson_id": 1,
       "title": "Giới thiệu về React",
       "description": "Slides bài giảng về React",
@@ -463,7 +492,7 @@
       "resource_type": "slide"
     },
     {
-      "id": 3,
+      "id": "3",
       "lesson_id": 3,
       "title": "Mã nguồn ví dụ",
       "description": "Mã nguồn cho ứng dụng React đầu tiên",
@@ -471,7 +500,7 @@
       "resource_type": "code"
     },
     {
-      "id": 4,
+      "id": "4",
       "lesson_id": 6,
       "title": "Bảng từ chào hỏi",
       "description": "Các từ và cụm từ chào hỏi thông dụng",
@@ -481,7 +510,7 @@
   ],
   "quizzes": [
     {
-      "id": 1,
+      "id": "1",
       "lesson_id": 4,
       "title": "Kiểm tra kiến thức về React cơ bản",
       "description": "Trắc nghiệm để đánh giá hiểu biết về React sau phần giới thiệu.",
@@ -492,7 +521,7 @@
       "random_question_order": true
     },
     {
-      "id": 2,
+      "id": "2",
       "lesson_id": 9,
       "title": "Bài kiểm tra cuối khóa ReactJS",
       "description": "Bài kiểm tra toàn diện về React để cấp chứng chỉ hoàn thành khóa học.",
@@ -505,7 +534,7 @@
   ],
   "quizQuestions": [
     {
-      "id": 1,
+      "id": "1",
       "quiz_id": 1,
       "question_text": "React được phát triển bởi công ty nào?",
       "question_type": "multiple_choice",
@@ -513,7 +542,7 @@
       "order_number": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "quiz_id": 1,
       "question_text": "JSX là viết tắt của?",
       "question_type": "multiple_choice",
@@ -521,7 +550,7 @@
       "order_number": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "quiz_id": 1,
       "question_text": "React sử dụng Virtual DOM?",
       "question_type": "true_false",
@@ -529,7 +558,7 @@
       "order_number": 3
     },
     {
-      "id": 4,
+      "id": "4",
       "quiz_id": 1,
       "question_text": "Công cụ nào được khuyến nghị để tạo dự án React mới?",
       "question_type": "multiple_choice",
@@ -537,7 +566,7 @@
       "order_number": 4
     },
     {
-      "id": 5,
+      "id": "5",
       "quiz_id": 1,
       "question_text": "Node.js là cần thiết để phát triển với React?",
       "question_type": "true_false",
@@ -547,7 +576,7 @@
   ],
   "quizAnswerOptions": [
     {
-      "id": 1,
+      "id": "1",
       "question_id": 1,
       "option_text": "Google",
       "is_correct": false,
@@ -555,7 +584,7 @@
       "order_number": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "question_id": 1,
       "option_text": "Facebook (Meta)",
       "is_correct": true,
@@ -563,7 +592,7 @@
       "order_number": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "question_id": 1,
       "option_text": "Microsoft",
       "is_correct": false,
@@ -571,7 +600,7 @@
       "order_number": 3
     },
     {
-      "id": 4,
+      "id": "4",
       "question_id": 1,
       "option_text": "Amazon",
       "is_correct": false,
@@ -579,7 +608,7 @@
       "order_number": 4
     },
     {
-      "id": 5,
+      "id": "5",
       "question_id": 2,
       "option_text": "JavaScript XML",
       "is_correct": true,
@@ -587,7 +616,7 @@
       "order_number": 1
     },
     {
-      "id": 6,
+      "id": "6",
       "question_id": 2,
       "option_text": "JavaScript Extension",
       "is_correct": false,
@@ -597,7 +626,7 @@
   ],
   "enrollments": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "course_id": 1,
       "enrollment_date": "2025-02-10T00:00:00Z",
@@ -608,7 +637,7 @@
       "status": "active"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 4,
       "course_id": 2,
       "enrollment_date": "2025-03-01T00:00:00Z",
@@ -619,7 +648,7 @@
       "status": "active"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 5,
       "course_id": 1,
       "enrollment_date": "2025-02-20T00:00:00Z",
@@ -630,7 +659,7 @@
       "status": "active"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 5,
       "course_id": 3,
       "enrollment_date": "2025-04-05T00:00:00Z",
@@ -643,7 +672,7 @@
   ],
   "learnerProgress": [
     {
-      "id": 3,
+      "id": "3",
       "enrollment_id": 1,
       "lesson_id": 3,
       "status": "in_progress",
@@ -652,7 +681,7 @@
       "last_position_seconds": 450
     },
     {
-      "id": 4,
+      "id": "4",
       "enrollment_id": 1,
       "lesson_id": 4,
       "status": "not_started",
@@ -661,7 +690,7 @@
       "last_position_seconds": 0
     },
     {
-      "id": 5,
+      "id": "5",
       "enrollment_id": 2,
       "lesson_id": 6,
       "status": "completed",
@@ -670,7 +699,7 @@
       "last_position_seconds": 900
     },
     {
-      "id": 6,
+      "id": "6",
       "enrollment_id": 3,
       "lesson_id": 1,
       "status": "completed",
@@ -681,7 +710,7 @@
   ],
   "quizAttempts": [
     {
-      "id": 1,
+      "id": "1",
       "enrollment_id": 1,
       "quiz_id": 1,
       "start_time": "2025-02-15T14:30:00Z",
@@ -691,7 +720,7 @@
       "attempt_number": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "enrollment_id": 3,
       "quiz_id": 1,
       "start_time": "2025-03-01T10:15:00Z",
@@ -703,7 +732,7 @@
   ],
   "quizAnswers": [
     {
-      "id": 1,
+      "id": "1",
       "attempt_id": 1,
       "question_id": 1,
       "selected_option_id": 2,
@@ -712,7 +741,7 @@
       "points_earned": 10
     },
     {
-      "id": 2,
+      "id": "2",
       "attempt_id": 1,
       "question_id": 2,
       "selected_option_id": 5,
@@ -721,7 +750,7 @@
       "points_earned": 10
     },
     {
-      "id": 3,
+      "id": "3",
       "attempt_id": 1,
       "question_id": 3,
       "selected_option_id": null,
@@ -730,7 +759,7 @@
       "points_earned": 10
     },
     {
-      "id": 4,
+      "id": "4",
       "attempt_id": 1,
       "question_id": 4,
       "selected_option_id": null,
@@ -739,7 +768,7 @@
       "points_earned": 10
     },
     {
-      "id": 5,
+      "id": "5",
       "attempt_id": 1,
       "question_id": 5,
       "selected_option_id": null,
@@ -750,7 +779,7 @@
   ],
   "learnerNotes": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "lesson_id": 1,
       "content": "React sử dụng JSX để tạo UI components, cần nhớ học thêm về syntax JSX.",
@@ -759,7 +788,7 @@
       "updated_at": "2025-02-10T14:25:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 4,
       "lesson_id": 2,
       "content": "Cài đặt Node.js trên Windows cần chú ý thêm biến môi trường PATH.",
@@ -768,7 +797,7 @@
       "updated_at": "2025-02-11T15:20:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 5,
       "lesson_id": 1,
       "content": "Virtual DOM là một trong những ưu điểm lớn của React, giúp tối ưu hóa việc render UI.",
@@ -779,7 +808,7 @@
   ],
   "courseRatings": [
     {
-      "id": 1,
+      "id": "1",
       "enrollment_id": 1,
       "rating": 5,
       "review": "Khóa học rất hay và dễ hiểu. Giảng viên giải thích rõ ràng các khái niệm phức tạp.",
@@ -788,7 +817,7 @@
       "is_approved": true
     },
     {
-      "id": 2,
+      "id": "2",
       "enrollment_id": 2,
       "rating": 4,
       "review": "Nội dung tốt nhưng cần thêm nhiều bài tập thực hành hơn.",
@@ -797,7 +826,7 @@
       "is_approved": true
     },
     {
-      "id": 3,
+      "id": "3",
       "enrollment_id": 3,
       "rating": 5,
       "review": "Một trong những khóa học React tốt nhất mà tôi từng học. Rất chi tiết và thực tế.",
@@ -808,19 +837,19 @@
   ],
   "courseForums": [
     {
-      "id": 1,
+      "id": "1",
       "course_id": 1,
       "title": "Diễn đàn hỏi đáp khóa học ReactJS",
       "is_active": true
     },
     {
-      "id": 2,
+      "id": "2",
       "course_id": 2,
       "title": "Thảo luận tiếng Anh giao tiếp",
       "is_active": true
     },
     {
-      "id": 3,
+      "id": "3",
       "course_id": 3,
       "title": "Diễn đàn kinh doanh online",
       "is_active": true
@@ -828,7 +857,7 @@
   ],
   "forumPosts": [
     {
-      "id": 1,
+      "id": "1",
       "forum_id": 1,
       "user_id": 4,
       "title": "Gặp lỗi khi cài đặt Create React App",
@@ -839,7 +868,7 @@
       "is_pinned": false
     },
     {
-      "id": 2,
+      "id": "2",
       "forum_id": 1,
       "user_id": 5,
       "title": "Cách tối ưu performance cho React app",
@@ -850,7 +879,7 @@
       "is_pinned": false
     },
     {
-      "id": 3,
+      "id": "3",
       "forum_id": 2,
       "user_id": 4,
       "title": "Cách luyện phát âm tiếng Anh hiệu quả",
@@ -863,7 +892,7 @@
   ],
   "forumReplies": [
     {
-      "id": 1,
+      "id": "1",
       "post_id": 1,
       "user_id": 2,
       "content": "Bạn có thể thử xóa thư mục node_modules và package-lock.json, sau đó chạy lại npm install và npx create-react-app. Đôi khi vấn đề có thể do cache npm.",
@@ -871,7 +900,7 @@
       "updated_at": "2025-02-18T10:15:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "post_id": 1,
       "user_id": 5,
       "content": "Mình cũng từng gặp lỗi này. Ngoài cách của giảng viên, bạn cũng có thể thử cập nhật NodeJS lên phiên bản mới nhất.",
@@ -879,7 +908,7 @@
       "updated_at": "2025-02-18T11:30:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "post_id": 2,
       "user_id": 2,
       "content": "Có vài cách để tối ưu: \n1. Sử dụng React.memo để tránh re-render không cần thiết \n2. Tối ưu hooks với useCallback và useMemo \n3. Sử dụng virtual scrolling cho danh sách dài \n4. Code splitting với React.lazy và Suspense",
@@ -889,7 +918,7 @@
   ],
   "forumReactions": [
     {
-      "id": 1,
+      "id": "1",
       "post_id": 1,
       "reply_id": null,
       "user_id": 5,
@@ -897,7 +926,7 @@
       "created_at": "2025-02-18T10:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "post_id": null,
       "reply_id": 1,
       "user_id": 4,
@@ -905,7 +934,7 @@
       "created_at": "2025-02-18T10:45:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "post_id": 2,
       "reply_id": null,
       "user_id": 4,
@@ -913,7 +942,7 @@
       "created_at": "2025-03-10T15:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "post_id": null,
       "reply_id": 3,
       "user_id": 5,
@@ -923,7 +952,7 @@
   ],
   "orders": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "order_date": "2025-02-10T08:15:00Z",
       "total_amount": 1200000,
@@ -935,7 +964,7 @@
       "created_at": "2025-02-10T08:15:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 4,
       "order_date": "2025-03-01T09:30:00Z",
       "total_amount": 940500,
@@ -947,7 +976,7 @@
       "created_at": "2025-03-01T09:30:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 5,
       "order_date": "2025-02-20T14:45:00Z",
       "total_amount": 1200000,
@@ -959,7 +988,7 @@
       "created_at": "2025-02-20T14:45:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 5,
       "order_date": "2025-04-05T10:20:00Z",
       "total_amount": 1350000,
@@ -973,7 +1002,7 @@
   ],
   "orderItems": [
     {
-      "id": 1,
+      "id": "1",
       "course_id": 1,
       "order_id": 1,
       "price": 1200000,
@@ -981,7 +1010,7 @@
       "exam_price": null
     },
     {
-      "id": 2,
+      "id": "2",
       "course_id": 2,
       "order_id": 2,
       "price": 940500,
@@ -989,7 +1018,7 @@
       "exam_price": null
     },
     {
-      "id": 3,
+      "id": "3",
       "course_id": 1,
       "order_id": 3,
       "price": 1200000,
@@ -997,7 +1026,7 @@
       "exam_price": null
     },
     {
-      "id": 4,
+      "id": "4",
       "course_id": 3,
       "order_id": 4,
       "price": 1350000,
@@ -1007,7 +1036,7 @@
   ],
   "transactions": [
     {
-      "id": 1,
+      "id": "1",
       "status": "completed",
       "order_id": 1,
       "amount": 1200000,
@@ -1016,7 +1045,7 @@
       "gateway_transaction_id": "vnp_1234567890"
     },
     {
-      "id": 2,
+      "id": "2",
       "status": "completed",
       "order_id": 2,
       "amount": 940500,
@@ -1025,7 +1054,7 @@
       "gateway_transaction_id": "momo_9876543210"
     },
     {
-      "id": 3,
+      "id": "3",
       "status": "completed",
       "order_id": 3,
       "amount": 1200000,
@@ -1034,7 +1063,7 @@
       "gateway_transaction_id": "vcb_5678901234"
     },
     {
-      "id": 4,
+      "id": "4",
       "status": "completed",
       "order_id": 4,
       "amount": 1350000,
@@ -1045,7 +1074,7 @@
   ],
   "instructorPayouts": [
     {
-      "id": 1,
+      "id": "1",
       "instructor_id": 2,
       "amount": 1890000,
       "payout_date": "2025-03-01T00:00:00Z",
@@ -1054,7 +1083,7 @@
       "status": "processed"
     },
     {
-      "id": 2,
+      "id": "2",
       "instructor_id": 3,
       "amount": 610000,
       "payout_date": "2025-03-01T00:00:00Z",
@@ -1063,7 +1092,7 @@
       "status": "processed"
     },
     {
-      "id": 3,
+      "id": "3",
       "instructor_id": 2,
       "amount": 2370000,
       "payout_date": "2025-04-01T00:00:00Z",
@@ -1072,7 +1101,7 @@
       "status": "processed"
     },
     {
-      "id": 4,
+      "id": "4",
       "instructor_id": 3,
       "amount": 780000,
       "payout_date": "2025-04-01T00:00:00Z",
@@ -1081,7 +1110,7 @@
       "status": "processed"
     },
     {
-      "id": 5,
+      "id": "5",
       "instructor_id": 2,
       "amount": 2105000,
       "payout_date": "2025-05-01T00:00:00Z",
@@ -1092,7 +1121,7 @@
   ],
   "promotionCodes": [
     {
-      "id": 1,
+      "id": "1",
       "code": "WELCOME5",
       "discount_type": "percentage",
       "discount_value": 5,
@@ -1103,7 +1132,7 @@
       "is_active": true
     },
     {
-      "id": 2,
+      "id": "2",
       "code": "SAVE10",
       "discount_type": "percentage",
       "discount_value": 10,
@@ -1114,7 +1143,7 @@
       "is_active": true
     },
     {
-      "id": 3,
+      "id": "3",
       "code": "SUMMER20",
       "discount_type": "percentage",
       "discount_value": 20,
@@ -1125,7 +1154,7 @@
       "is_active": false
     },
     {
-      "id": 4,
+      "id": "4",
       "code": "FREECERT",
       "discount_type": "fixed_amount",
       "discount_value": 300000,
@@ -1138,7 +1167,7 @@
   ],
   "notifications": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "title": "Khóa học mới đã được đăng ký",
       "content": "Bạn đã đăng ký thành công khóa học 'Lập trình Web với ReactJS'. Hãy bắt đầu học ngay!",
@@ -1147,7 +1176,7 @@
       "created_at": "2025-02-10T08:20:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 5,
       "title": "Hoàn thành bài kiểm tra",
       "content": "Chúc mừng! Bạn đã hoàn thành bài kiểm tra 'Kiểm tra kiến thức về React cơ bản' với điểm số 90/100.",
@@ -1156,7 +1185,7 @@
       "created_at": "2025-03-01T10:30:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 4,
       "title": "Khóa học mới được phát hành",
       "content": "Khóa học 'Nhập môn Khoa học Dữ liệu' vừa được phát hành. Hãy xem ngay!",
@@ -1165,7 +1194,7 @@
       "created_at": "2025-04-05T09:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 6,
       "title": "Thanh toán thất bại",
       "content": "Thanh toán cho đơn hàng #6 thất bại. Vui lòng thử lại hoặc liên hệ hỗ trợ.",
@@ -1174,7 +1203,7 @@
       "created_at": "2025-04-15T12:10:00Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "user_id": 5,
       "title": "Đánh giá khóa học của bạn",
       "content": "Hãy để lại đánh giá cho khóa học 'Khoa học Dữ liệu' để chia sẻ trải nghiệm của bạn!",
@@ -1185,7 +1214,7 @@
   ],
   "systemAnnouncements": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Bảo trì hệ thống",
       "content": "Hệ thống sẽ bảo trì từ 2:00 đến 4:00 sáng ngày 2025-03-15. Vui lòng sắp xếp thời gian học tập phù hợp.",
       "start_date": "2025-03-10T00:00:00Z",
@@ -1195,7 +1224,7 @@
       "updated_at": "2025-03-08T10:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Chương trình khuyến mãi mùa hè",
       "content": "Nhập mã SUMMER20 để nhận ưu đãi 20% cho tất cả khóa học từ 1/6 đến 31/8/2025!",
       "start_date": "2025-05-01T00:00:00Z",
@@ -1205,7 +1234,7 @@
       "updated_at": "2025-04-25T09:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Cập nhật tính năng mới",
       "content": "Chúng tôi vừa thêm tính năng ghi chú cá nhân hóa trong các bài học video. Hãy thử ngay!",
       "start_date": "2025-02-01T00:00:00Z",
@@ -1215,7 +1244,7 @@
       "updated_at": "2025-01-30T14:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Chào mừng năm mới 2025",
       "content": "Chúc bạn năm mới học tập hiệu quả! Nhập mã WELCOME5 để được giảm 5% cho mọi khóa học.",
       "start_date": "2025-01-01T00:00:00Z",
@@ -1227,7 +1256,7 @@
   ],
   "certificates": [
     {
-      "id": 1,
+      "id": "1",
       "enrollment_id": 3,
       "user_id": 5,
       "course_id": 1,
@@ -1239,7 +1268,7 @@
       "updated_at": "2025-04-01T09:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "enrollment_id": 2,
       "user_id": 4,
       "course_id": 2,
@@ -1251,7 +1280,7 @@
       "updated_at": "2025-04-15T10:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "enrollment_id": 5,
       "user_id": 6,
       "course_id": 6,
@@ -1265,7 +1294,7 @@
   ],
   "blogPosts": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Top 5 mẹo học lập trình hiệu quả",
       "slug": "top-5-meo-hoc-lap-trinh",
       "content": "# Top 5 Mẹo Học Lập Trình Hiệu Quả\n\nLập trình là một kỹ năng đòi hỏi sự kiên nhẫn và thực hành liên tục. Dưới đây là 5 mẹo giúp bạn học lập trình hiệu quả hơn:\n1. Tertiary: **Thực hành hàng ngày**: Viết code mỗi ngày để cải thiện kỹ năng.\n2. **Học qua dự án thực tế**: Làm các dự án nhỏ để áp dụng kiến thức.\n3. **Tham gia cộng đồng**: Kết nối với các lập trình viên khác qua diễn đàn, hội nhóm.\n4. **Sử dụng tài liệu chính thức**: Đọc tài liệu từ các nguồn uy tín như MDN, React Docs.\n5. **Debugging**: Học cách tìm và sửa lỗi hiệu quả.\n\nHãy thử áp dụng những mẹo này và chia sẻ kết quả của bạn!",
@@ -1279,7 +1308,7 @@
       "published_at": "2025-01-16T00:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Tại sao nên học tiếng Anh giao tiếp?",
       "slug": "tai-sao-hoc-tieng-anh-giao-tiep",
       "content": "<h1>Tại Sao Nên Học Tiếng Anh Giao Tiếp?</h1><p>Tiếng Anh giao tiếp không chỉ giúp bạn tự tin hơn trong công việc mà còn mở ra nhiều cơ hội quốc tế.</p><ul><li><strong>Cơ hội nghề nghiệp</strong>: Nhiều công ty yêu cầu kỹ năng tiếng Anh tốt.</li><li><strong>Du lịch</strong>: Giao tiếp dễ dàng khi đi nước ngoài.</li><li><strong>Kết nối toàn cầu</strong>: Kết bạn và học hỏi từ các nền văn hóa khác.</li></ul><p>Bắt đầu học ngay hôm nay với các khóa học của chúng tôi!</p>",
@@ -1293,7 +1322,7 @@
       "published_at": "2025-02-21T00:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Bí quyết xây dựng doanh nghiệp online",
       "slug": "bi-quyet-xay-dung-doanh-nghiep-online",
       "content": "# Bí Quyết Xây Dựng Doanh Nghiệp Online\n\nXây dựng một doanh nghiệp online không khó nếu bạn nắm được các bước cơ bản:\n1. **Xác định thị trường ngách**: Tìm một lĩnh vực bạn đam mê và có nhu cầu cao.\n2. **Xây dựng thương hiệu**: Tạo logo, website chuyên nghiệp.\n3. **Tiếp thị số**: Sử dụng SEO, quảng cáo Google, và mạng xã hội.\n4. **Chăm sóc khách hàng**: Phản hồi nhanh chóng và xây dựng lòng tin.\n5. **Tối ưu hóa chi phí**: Sử dụng các công cụ miễn phí hoặc chi phí thấp.\n\nHãy bắt đầu hành trình kinh doanh của bạn ngay hôm nay!",
@@ -1307,7 +1336,7 @@
       "published_at": "2025-03-11T00:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Nhập môn Khoa học Dữ liệu với Python",
       "slug": "nhap-mon-khoa-hoc-du-lieu-python",
       "content": "# Nhập Môn Khoa Học Dữ liệu với Python\n\nKhoa học dữ liệu là một lĩnh vực đang phát triển mạnh mẽ. Dưới đây là các bước cơ bản để bắt đầu:\n1. **Học Python cơ bản**: Nắm vững cú pháp và thư viện như NumPy, Pandas.\n2. **Xử lý dữ liệu**: Làm sạch và phân tích dữ liệu với Pandas.\n3. **Trực quan hóa**: Sử dụng Matplotlib và Seaborn để vẽ biểu đồ.\n4. **Học máy**: Tìm hiểu các thuật toán cơ bản với Scikit-learn.\n5. **Thực hành dự án**: Làm các dự án thực tế để áp dụng kiến thức.\n\nTham gia khóa học của chúng tôi để bắt đầu hành trình khoa học dữ liệu!",
@@ -1323,25 +1352,25 @@
   ],
   "blogCategories": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Công nghệ",
       "slug": "cong-nghe",
       "description": "Bài viết về các xu hướng và công nghệ mới."
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Học ngoại ngữ",
       "slug": "hoc-ngoai-ngu",
       "description": "Mẹo và phương pháp học ngoại ngữ hiệu quả."
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Kinh doanh",
       "slug": "kinh-doanh",
       "description": "Chiến lược và kinh nghiệm kinh doanh."
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Khoa học dữ liệu",
       "slug": "khoa-hoc-du-lieu",
       "description": "Hướng dẫn và tin tức về khoa học dữ liệu."
@@ -1350,28 +1379,33 @@
   "blogPostCategories": [
     {
       "post_id": 1,
-      "category_id": 1
+      "category_id": 1,
+      "id": "edfa"
     },
     {
       "post_id": 2,
-      "category_id": 2
+      "category_id": 2,
+      "id": "8ec9"
     },
     {
       "post_id": 3,
-      "category_id": 3
+      "category_id": 3,
+      "id": "d8b2"
     },
     {
       "post_id": 4,
-      "category_id": 4
+      "category_id": 4,
+      "id": "2bbb"
     },
     {
       "post_id": 1,
-      "category_id": 4
+      "category_id": 4,
+      "id": "6852"
     }
   ],
   "blogComments": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "post_id": 1,
       "content": "Bài viết rất hữu ích, đặc biệt là phần về debugging!",
@@ -1380,7 +1414,7 @@
       "is_approved": true
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 5,
       "post_id": 2,
       "content": "Cảm ơn vì các gợi ý về tiếng Anh, mình sẽ thử áp dụng!",
@@ -1389,7 +1423,7 @@
       "is_approved": true
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 6,
       "post_id": 3,
       "content": "Bài viết này rất thực tế, đặc biệt là phần tối ưu chi phí.",
@@ -1398,7 +1432,7 @@
       "is_approved": true
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 4,
       "post_id": 1,
       "content": "Có thể bổ sung thêm mẹo về cách quản lý thời gian khi học lập trình không?",
@@ -1409,25 +1443,25 @@
   ],
   "savedBlogs": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "blog_id": 1,
       "saved_date": "2025-01-16T10:15:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 5,
       "blog_id": 2,
       "saved_date": "2025-02-21T14:45:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 6,
       "blog_id": 3,
       "saved_date": "2025-03-12T09:30:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 5,
       "blog_id": 1,
       "saved_date": "2025-03-15T10:00:00Z"
@@ -1435,25 +1469,25 @@
   ],
   "savedPosts": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "post_id": 1,
       "saved_at": "2025-02-18T10:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 5,
       "post_id": 2,
       "saved_at": "2025-03-10T15:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 6,
       "post_id": 4,
       "saved_at": "2025-04-15T10:30:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 4,
       "post_id": 3,
       "saved_at": "2025-03-20T16:30:00Z"
@@ -1461,7 +1495,7 @@
   ],
   "goals": [
     {
-      "id": 1,
+      "id": "1",
       "user_id": 4,
       "type": "learning_time",
       "value": 600,
@@ -1469,7 +1503,7 @@
       "created_at": "2025-02-10T09:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "user_id": 5,
       "type": "lesson_count",
       "value": 10,
@@ -1477,7 +1511,7 @@
       "created_at": "2025-03-01T10:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "user_id": 6,
       "type": "course_completion",
       "value": 1,
@@ -1485,7 +1519,7 @@
       "created_at": "2025-04-10T11:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "user_id": 4,
       "type": "quiz_score",
       "value": 90,

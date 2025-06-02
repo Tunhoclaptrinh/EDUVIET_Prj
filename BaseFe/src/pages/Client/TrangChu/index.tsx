@@ -158,7 +158,7 @@ const TrangChuPage: React.FC = () => {
 							<Row gutter={[16, 16]} justify='start'>
 								{proCourses.slice(0, 6).map((course, index) => (
 									<Col xs={24} sm={12} md={8} key={course.id}>
-										<Link to={`/khoa-hoc/${course.id}`}>
+										<Link to={`/public/khoa-hoc/${course.id}`}>
 											<Card
 												hoverable
 												cover={
@@ -256,7 +256,7 @@ const TrangChuPage: React.FC = () => {
 							<Row gutter={[16, 16]} justify='start'>
 								{freeCourses.slice(0, 8).map((course, index) => (
 									<Col xs={24} sm={12} md={8} lg={6} key={course.id}>
-										<Link to={`/khoa-hoc/${course.id}`}>
+										<Link to={`/public/khoa-hoc/${course.id}`}>
 											{/* Thêm Link để chuyển hướng */}
 											<Card
 												hoverable

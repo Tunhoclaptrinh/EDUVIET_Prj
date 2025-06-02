@@ -5,7 +5,9 @@ declare module Course {
 		title: string;
 		description: string;
 		price: number;
-		instructor_id: number;
+		// instructor_id: number;
+		instructor: string; // tạm thời lưu tên thôi
+
 		category_id: number;
 		thumbnail: string;
 		status: 'approved' | 'pending_approval' | 'rejected';

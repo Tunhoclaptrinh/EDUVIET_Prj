@@ -529,7 +529,7 @@ const KhoaHocPage: React.FC = () => {
 									<div style={{ marginTop: '16px', padding: '12px 0', borderTop: '1px solid #f1f1f1' }}>
 										<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
 											<Text style={{ color: '#666' }}>Số học viên:</Text>
-											<Text strong>{course.enrolled_count.toLocaleString('vi-VN')}</Text>
+											<Text strong>{course.enrolled_count}</Text>
 										</div>
 										<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
 											<Text style={{ color: '#666' }}>Đánh giá:</Text>
