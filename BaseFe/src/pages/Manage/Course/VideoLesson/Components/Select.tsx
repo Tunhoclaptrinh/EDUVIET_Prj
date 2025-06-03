@@ -42,7 +42,7 @@ const VideoLessonSelect: React.FC<VideoLessonSelectProps> = ({
 		};
 
 		fetchVideoLessons();
-	}, [getAllModel, onChange, defaultFirst, value]);
+	}, []);
 
 	const options = useMemo(() => {
 		return danhSach.map((videoLesson: VideoLesson.IRecord) => {

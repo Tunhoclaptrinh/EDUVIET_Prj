@@ -9,7 +9,8 @@ import {
 	PlusOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
-import { useParams } from 'umi';
+import { useParams, useHistory } from 'umi';
+import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/Siderbar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -63,8 +64,9 @@ interface VideoLesson {
 }
 
 const KhoaHocPage: React.FC = () => {
-	// Get course ID from URL params
 	const { id } = useParams<{ id: string }>();
+	const history = useHistory();
+	const { user, isAuthenticated } = useAuth();
 
 	// State management
 	const [course, setCourse] = useState<Course | null>(null);
@@ -73,6 +75,7 @@ const KhoaHocPage: React.FC = () => {
 	const [expandedLessons, setExpandedLessons] = useState<string[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [isRegistered, setIsRegistered] = useState<boolean>(false);
+	const [checkingEnrollment, setCheckingEnrollment] = useState<boolean>(true);
 
 	// Navigation items
 	const sidebarNavItems = [
@@ -85,6 +88,30 @@ const KhoaHocPage: React.FC = () => {
 		console.log('Voice mode activated');
 	};
 
+	// Check enrollment status
+	useEffect(() => {
+		const checkEnrollment = async () => {
+			if (!id || !user?.id) {
+				setCheckingEnrollment(false);
+				return;
+			}
+
+			try {
+				const response = await axios.get(`http://localhost:3000/enrollments?user_id=${user.id}&course_id=${id}`);
+				const enrollments = response.data;
+				const isEnrolled = enrollments.length > 0 && enrollments[0].is_active;
+				setIsRegistered(isEnrolled);
+			} catch (error) {
+				console.error('Error checking enrollment:', error);
+				message.error('Không thể kiểm tra trạng thái đăng ký');
+			} finally {
+				setCheckingEnrollment(false);
+			}
+		};
+
+		checkEnrollment();
+	}, [id, user]);
+
 	// Toggle section expansion
 	const toggleExpand = async (sectionId: string) => {
 		if (expandedLessons.includes(sectionId)) {
@@ -92,7 +119,6 @@ const KhoaHocPage: React.FC = () => {
 		} else {
 			setExpandedLessons([...expandedLessons, sectionId]);
 
-			// Fetch lessons for this section if not already loaded
 			if (!lessons[sectionId]) {
 				try {
 					const response = await axios.get<Lesson[]>(`http://localhost:3000/lessons?section_id=${sectionId}`);
@@ -108,7 +134,7 @@ const KhoaHocPage: React.FC = () => {
 		}
 	};
 
-	// Fetch all course data
+	// Fetch course data
 	useEffect(() => {
 		const fetchCourseData = async () => {
 			if (!id) return;
@@ -127,7 +153,7 @@ const KhoaHocPage: React.FC = () => {
 				const sortedSections = sectionsResponse.data.sort((a, b) => a.order_number - b.order_number);
 				setSections(sortedSections);
 
-				// Auto-expand first section and load its lessons
+				// Auto-expand first section
 				if (sortedSections.length > 0) {
 					const firstSectionId = sortedSections[0].id;
 					setExpandedLessons([firstSectionId]);
@@ -153,6 +179,45 @@ const KhoaHocPage: React.FC = () => {
 
 		fetchCourseData();
 	}, [id]);
+
+	// Handle registration
+	const handleRegistration = async () => {
+		if (!isAuthenticated) {
+			history.push(`/login?redirectTo=/courses/${id}`);
+			message.warning('Vui lòng đăng nhập để đăng ký khóa học');
+			return;
+		}
+
+		try {
+			const enrollmentData = {
+				user_id: parseInt(user!.id),
+				course_id: parseInt(id!),
+				enrollment_date: new Date().toISOString(),
+				is_active: true,
+				last_accessed: new Date().toISOString(),
+				completion_percentage: 0,
+				expiry_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
+				status: 'active',
+			};
+
+			const response = await axios.post('http://localhost:3000/enrollments', enrollmentData);
+			if (response.status === 201) {
+				setIsRegistered(true);
+				message.success('Đăng ký khóa học thành công!');
+			}
+		} catch (error) {
+			console.error('Error registering for course:', error);
+			message.error('Đăng ký khóa học thất bại. Vui lòng thử lại.');
+		}
+	};
+
+	// Handle "Vào học ngay" click
+	const handleStartLearning = () => {
+		const firstSectionId = sections[0]?.id;
+		const firstLessonId = lessons[firstSectionId]?.[0]?.id;
+		const redirectPath = firstLessonId ? `/public/khoa-hoc/${id}/bai-hoc/${firstLessonId}` : `/public/${id}/lessons`;
+		history.push(redirectPath);
+	};
 
 	// Helper functions
 	const formatPrice = (price: number): string => {
@@ -188,7 +253,10 @@ const KhoaHocPage: React.FC = () => {
 
 	const courseFeatures = course
 		? [
-				{ icon: <CheckCircleOutlined />, text: course.price === 0 ? 'Trình độ cơ bản' : 'Khóa học chất lượng cao' },
+				{
+					icon: <CheckCircleOutlined />,
+					text: course.price === 0 ? 'Trình độ cơ bản' : 'Khóa học chất lượng cao',
+				},
 				{ icon: <CheckCircleOutlined />, text: `Tổng số ${getTotalStats().lessons} bài học` },
 				{ icon: <CheckCircleOutlined />, text: `Thời lượng ${getTotalStats().duration}` },
 				{ icon: <CheckCircleOutlined />, text: 'Học mọi lúc, mọi nơi' },
@@ -197,7 +265,7 @@ const KhoaHocPage: React.FC = () => {
 		: [];
 
 	// Loading state
-	if (loading) {
+	if (loading || checkingEnrollment) {
 		return (
 			<Layout style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
 				<Header />
@@ -234,16 +302,12 @@ const KhoaHocPage: React.FC = () => {
 
 	return (
 		<Layout style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-			{/* Header */}
 			<Header />
-			{/* Sidebar */}
 			<Sidebar navItems={sidebarNavItems} onVoiceClick={handleVoiceClick} />
 
-			{/* Main Content */}
 			<Layout style={{ backgroundColor: '#f5f5f5', margin: '120px 120px 60px' }}>
 				<Content>
 					<Row gutter={[24, 24]}>
-						{/* Left Content - Course Details */}
 						<Col xs={24} md={16}>
 							<Title level={2} style={{ margin: '0 0 16px', fontWeight: 'bold' }}>
 								{course.title}
@@ -285,14 +349,17 @@ const KhoaHocPage: React.FC = () => {
 									</Button>
 								</div>
 
-								{/* Course Content Accordion */}
 								<div>
 									{sections.map((section, sectionIndex) => (
 										<div
 											key={section.id}
-											style={{ marginBottom: '8px', backgroundColor: '#fff', borderRadius: '8px', overflow: 'hidden' }}
+											style={{
+												marginBottom: '8px',
+												backgroundColor: '#fff',
+												borderRadius: '8px',
+												overflow: 'hidden',
+											}}
 										>
-											{/* Section header */}
 											<div
 												style={{
 													padding: '12px 16px',
@@ -326,7 +393,6 @@ const KhoaHocPage: React.FC = () => {
 												</Text>
 											</div>
 
-											{/* Lessons for expanded sections */}
 											{expandedLessons.includes(section.id) && lessons[section.id] && (
 												<div>
 													{lessons[section.id].map((lesson, lessonIndex) => (
@@ -408,10 +474,8 @@ const KhoaHocPage: React.FC = () => {
 							</div>
 						</Col>
 
-						{/* Right Content - Course Preview and Registration */}
 						<Col xs={24} md={8}>
 							<div style={{ position: 'sticky', top: '88px' }}>
-								{/* Video Preview */}
 								<div
 									style={{
 										backgroundColor: '#fff',
@@ -439,7 +503,7 @@ const KhoaHocPage: React.FC = () => {
 												style={{
 													width: '100px',
 													height: '100px',
-													background: 'rgba(0,0,0,0.4)',
+													backgroundColor: 'rgba(0,0,0,0.4)',
 													borderRadius: '50%',
 													display: 'flex',
 													alignItems: 'center',
@@ -465,7 +529,7 @@ const KhoaHocPage: React.FC = () => {
 													display: 'inline-block',
 													fontWeight: 'bold',
 													fontSize: '20px',
-													marginBottom: '16px',
+													margin: '0 0 16px',
 												}}
 											>
 												{course.price === 0 ? 'Miễn phí' : formatPrice(course.price)}
@@ -482,25 +546,19 @@ const KhoaHocPage: React.FC = () => {
 												size='large'
 												block
 												style={{
-													backgroundColor: isRegistered ? '#ccc' : '#1677ff',
+													backgroundColor: isRegistered ? '#52c41a' : '#1677ff',
 													height: '40px',
 													fontWeight: 'bold',
 												}}
-												disabled={isRegistered}
-												onClick={() => {
-													// Handle registration logic here
-													console.log('Register for course:', course.id);
-													message.success('Đăng ký khóa học thành công!');
-													setIsRegistered(true);
-												}}
+												onClick={isRegistered ? handleStartLearning : handleRegistration}
+												loading={checkingEnrollment}
 											>
-												{isRegistered ? 'ĐÃ ĐĂNG KÝ' : 'ĐĂNG KÝ HỌC'}
+												{isRegistered ? 'VÀO HỌC NGAY' : 'ĐĂNG KÝ HỌC'}
 											</Button>
 										</div>
 									</div>
 								</div>
 
-								{/* Course Features */}
 								<div
 									style={{
 										backgroundColor: '#fff',
@@ -525,7 +583,6 @@ const KhoaHocPage: React.FC = () => {
 										</div>
 									))}
 
-									{/* Additional course info */}
 									<div style={{ marginTop: '16px', padding: '12px 0', borderTop: '1px solid #f1f1f1' }}>
 										<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
 											<Text style={{ color: '#666' }}>Số học viên:</Text>
@@ -536,7 +593,8 @@ const KhoaHocPage: React.FC = () => {
 											<Text strong>{course.avg_rating}/5 ⭐</Text>
 										</div>
 										<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-											<Text style={{ color: '#666' }}>Mã khóa học:</Text>
+											<Text style={{ color: '#666' }}></Text>
+											<strong>Mã khóa học:</strong>
 											<Text strong>{course.course_code}</Text>
 										</div>
 									</div>
@@ -546,7 +604,6 @@ const KhoaHocPage: React.FC = () => {
 					</Row>
 				</Content>
 			</Layout>
-			{/* Footer */}
 			<Footer />
 		</Layout>
 	);

@@ -50,7 +50,7 @@ const LessonSelect: React.FC<LessonSelectProps> = ({
 		};
 
 		fetchLessons();
-	}, [getAllModel, onChange, defaultFirst, value, sectionId, approvedOnly]);
+	}, []);
 
 	// Helper function to filter lessons
 	const getFilteredLessons = (lessons: Lesson.IRecord[]) => {

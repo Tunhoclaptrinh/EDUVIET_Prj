@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Select, message } from 'antd';
 import { useModel } from 'umi';
 
-interface CourseSectionProps {
+interface CourseSectionSelectProps {
 	value?: string | number;
 	onChange?: (val: string | number) => void;
 	placeholder?: string;
@@ -14,7 +14,7 @@ interface CourseSectionProps {
 	defaultFirst?: boolean;
 }
 
-const CourseSection: React.FC<CourseSectionProps> = ({
+const CourseSectionSelect: React.FC<CourseSectionSelectProps> = ({
 	value,
 	onChange,
 	placeholder = 'Chọn chương học',
@@ -50,7 +50,7 @@ const CourseSection: React.FC<CourseSectionProps> = ({
 		};
 
 		fetchChapters();
-	}, [getAllModel, onChange, defaultFirst, value, courseId]);
+	}, []);
 
 	// Lọc chương học theo khóa học
 	const filteredChapters = useMemo(() => {
@@ -91,4 +91,4 @@ const CourseSection: React.FC<CourseSectionProps> = ({
 	);
 };
 
-export default CourseSection;
+export default CourseSectionSelect;

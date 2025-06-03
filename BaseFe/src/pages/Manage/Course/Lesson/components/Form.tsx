@@ -10,6 +10,8 @@ import {
 	LinkOutlined,
 	FileTextOutlined,
 } from '@ant-design/icons';
+import { ipLocal } from '@/utils/ip';
+import CourseSelect from '../../Course/components/Select';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -23,41 +25,64 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 	const { postModel: postVideoModel, putModel: putVideoModel } = useModel('course.videoLesson');
 	const [form] = Form.useForm();
 	const [submitting, setSubmitting] = useState(false);
+	const [courses, setCourses] = useState<{ id: string | number; title: string }[]>([]);
+	const [sections, setSections] = useState<{ id: string | number; title: string; course_id: string | number }[]>([]);
 
-	// Reset form and populate data when opening
+	// Fetch courses and sections
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				// Fetch courses
+				const courseResponse = await fetch(`${ipLocal}/courses`);
+				if (!courseResponse.ok) throw new Error('Failed to fetch courses');
+				const courseData = await courseResponse.json();
+				setCourses(courseData);
+
+				// Fetch sections
+				const sectionResponse = await fetch(`${ipLocal}/courseSections`);
+				if (!sectionResponse.ok) throw new Error('Failed to fetch sections');
+				const sectionData = await sectionResponse.json();
+				setSections(sectionData);
+			} catch (error) {
+				message.error('Không thể tải dữ liệu khóa học hoặc chương học');
+				console.error('Error fetching data:', error);
+			}
+		};
+		fetchData();
+	}, []);
+
+	// Initialize form data
 	useEffect(() => {
 		console.log('Form useEffect triggered. visibleForm:', visibleForm, 'record:', record);
 		if (!visibleForm) {
 			console.log('Resetting form due to visibleForm being false');
 			resetFieldsForm(form);
 		} else if (record) {
+			const section = sections.find((s) => String(s.id) === String(record.section_id));
 			const formData = {
-				// Lesson fields
-				title: record.title || '',
+				course_id: section ? String(section.course_id) : undefined,
 				section_id: record.section_id || undefined,
+				title: record.title || '',
 				content_type: record.content_type || undefined,
 				duration_minutes: record.duration_minutes || undefined,
 				order_number: record.order_number || undefined,
 				description: record.description || '',
 				is_free_preview: record.is_free_preview || false,
 				status: record.status || 'pending',
-				// Video lesson fields
 				video_url: record.videoLesson?.video_url || record.video_lesson?.video_url || '',
 				embed_code: record.videoLesson?.embed_code || record.video_lesson?.embed_code || '',
 				transcript: record.videoLesson?.transcript || record.video_lesson?.transcript || '',
 				prevent_skipping: record.videoLesson?.prevent_skipping || record.video_lesson?.prevent_skipping || false,
 				encryption_key: record.videoLesson?.encryption_key || record.video_lesson?.encryption_key || '',
 			};
-
 			console.log('Setting form values:', formData);
 			form.setFieldsValue(formData);
 		} else {
 			console.log('No record provided, resetting form');
 			resetFieldsForm(form);
 		}
-	}, [record, visibleForm, form]);
+	}, [record, visibleForm, form, sections]);
 
-	// Helper function to detect video platform
 	const detectVideoPlatform = (url: string) => {
 		if (!url) return null;
 		if (url.includes('youtube.com') || url.includes('youtu.be')) {
@@ -75,36 +100,31 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 		if (!values.title?.trim()) {
 			return 'Vui lòng nhập tiêu đề bài học';
 		}
-
+		if (!values.course_id) {
+			return 'Vui lòng chọn khóa học';
+		}
 		if (!values.section_id) {
 			return 'Vui lòng chọn phần học';
 		}
-
 		if (!values.content_type) {
 			return 'Vui lòng chọn loại nội dung';
 		}
-
 		if (!values.duration_minutes || values.duration_minutes <= 0) {
 			return 'Vui lòng nhập thời lượng hợp lệ';
 		}
-
 		if (!values.order_number || values.order_number <= 0) {
 			return 'Vui lòng nhập thứ tự hợp lệ';
 		}
-
 		if (values.content_type === 'video') {
 			if (!values.video_url?.trim()) {
 				return 'Vui lòng nhập URL video';
 			}
-
-			// Validate URL format
 			try {
 				new URL(values.video_url);
 			} catch {
 				return 'URL video không hợp lệ';
 			}
 		}
-
 		return null;
 	};
 
@@ -112,14 +132,12 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 		try {
 			setSubmitting(true);
 
-			// Validate form data
 			const validationError = validateFormData(values);
 			if (validationError) {
 				message.error(validationError);
 				return;
 			}
 
-			// Prepare lesson submit data
 			const baseLessonData = {
 				section_id: values.section_id,
 				title: values.title?.trim(),
@@ -136,7 +154,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 			let lessonId: string | number;
 
 			if (edit) {
-				// For editing: include all fields including IDs
 				if (!record?.id) {
 					throw new Error('Record ID is required for editing');
 				}
@@ -149,7 +166,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 				lessonResult = await putModel(record.id, lessonSubmitData);
 				lessonId = record.id;
 			} else {
-				// For creating: only include necessary fields, no ID
 				const now = new Date().toISOString();
 				lessonSubmitData = {
 					...baseLessonData,
@@ -160,12 +176,10 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 				lessonId = lessonResult?.id;
 			}
 
-			// Check if lesson operation was successful
 			if (!lessonResult) {
 				throw new Error('Lesson operation failed');
 			}
 
-			// Handle video lesson data if content_type is 'video'
 			if (values.content_type === 'video') {
 				const baseVideoData = {
 					lesson_id: lessonId,
@@ -180,7 +194,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 				let videoResult;
 
 				if (edit && (record.videoLesson?.id || record.video_lesson?.id)) {
-					// Update existing video lesson
 					videoSubmitData = {
 						...baseVideoData,
 						id: record.videoLesson?.id || record.video_lesson?.id,
@@ -189,7 +202,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 					};
 					videoResult = await putVideoModel(videoSubmitData.id, videoSubmitData);
 				} else {
-					// Create new video lesson
 					const now = new Date().toISOString();
 					videoSubmitData = {
 						...baseVideoData,
@@ -199,7 +211,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 					videoResult = await postVideoModel(videoSubmitData);
 				}
 
-				// Check if video operation was successful
 				if (!videoResult) {
 					throw new Error('Video lesson operation failed');
 				}
@@ -225,17 +236,15 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 		resetFieldsForm(form);
 	};
 
-	// Watch content_type to conditionally render video fields
 	const watchedContentType = Form.useWatch('content_type', form);
-	// Watch video_url to show platform info
 	const watchedVideoUrl = Form.useWatch('video_url', form);
+	const watchedCourseId = Form.useWatch('course_id', form);
 	const videoPlatform = watchedVideoUrl ? detectVideoPlatform(watchedVideoUrl) : null;
 
 	return (
 		<div>
 			<Card title={`${edit ? 'Chỉnh sửa' : 'Thêm mới'} ${title}`}>
 				<Form form={form} layout='vertical' onFinish={onFinish} autoComplete='off'>
-					{/* Thông tin cơ bản */}
 					<Card type='inner' title='📚 Thông tin cơ bản' style={{ marginBottom: 16 }}>
 						<Row gutter={[16, 0]}>
 							<Col span={24}>
@@ -248,13 +257,50 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 								</Form.Item>
 							</Col>
 						</Row>
-
 						<Row gutter={[16, 0]}>
 							<Col span={12}>
-								<Form.Item label='ID Phần học' name='section_id' rules={[...rules.required]}>
-									<InputNumber placeholder='Nhập ID phần học' style={{ width: '100%' }} min={1} />
+								<Form.Item label='Khóa học' name='course_id' rules={[...rules.required]}>
+									<Select
+										placeholder='Chọn khóa học'
+										showSearch
+										optionFilterProp='children'
+										filterOption={(input, option) =>
+											(option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
+										}
+										onChange={() => form.setFieldsValue({ section_id: undefined })}
+									>
+										{courses.map((course) => (
+											<Option key={course.id} value={course.id}>
+												{course.title}
+											</Option>
+										))}
+									</Select>
+									{/* <CourseSelect></CourseSelect> */}
 								</Form.Item>
 							</Col>
+							<Col span={12}>
+								<Form.Item label='Phần học' name='section_id' rules={[...rules.required]}>
+									<Select
+										placeholder='Chọn phần học'
+										showSearch
+										optionFilterProp='children'
+										filterOption={(input, option) =>
+											(option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
+										}
+										disabled={!watchedCourseId}
+									>
+										{sections
+											.filter((section) => String(section.course_id) === String(watchedCourseId))
+											.map((section) => (
+												<Option key={section.id} value={section.id}>
+													{section.title}
+												</Option>
+											))}
+									</Select>
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={[16, 0]}>
 							<Col span={12}>
 								<Form.Item label='Loại nội dung' name='content_type' rules={[...rules.required]}>
 									<Select placeholder='Chọn loại nội dung'>
@@ -263,23 +309,19 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 									</Select>
 								</Form.Item>
 							</Col>
-						</Row>
-
-						<Row gutter={[16, 0]}>
 							<Col span={12}>
 								<Form.Item label='Thời lượng (phút)' name='duration_minutes' rules={[...rules.required]}>
 									<InputNumber placeholder='Nhập thời lượng' style={{ width: '100%' }} min={1} max={9999} />
 								</Form.Item>
 							</Col>
+						</Row>
+						<Row gutter={[16, 0]}>
 							<Col span={12}>
 								<Form.Item label='Thứ tự' name='order_number' rules={[...rules.required]}>
 									<InputNumber placeholder='Nhập thứ tự' style={{ width: '100%' }} min={1} />
 								</Form.Item>
 							</Col>
-						</Row>
-
-						<Row gutter={[16, 0]}>
-							<Col span={24}>
+							<Col span={12}>
 								<Form.Item
 									label='Mô tả bài học'
 									name='description'
@@ -290,11 +332,8 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 							</Col>
 						</Row>
 					</Card>
-
-					{/* Video Lesson Fields (Conditional) */}
 					{watchedContentType === 'video' && (
 						<>
-							{/* Thông tin video cơ bản */}
 							<Card type='inner' title='📹 Thông tin video cơ bản' style={{ marginBottom: 16 }}>
 								<Row gutter={[16, 0]}>
 									<Col span={24}>
@@ -311,13 +350,7 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 												</span>
 											}
 											name='video_url'
-											rules={[
-												...rules.required,
-												{
-													type: 'url',
-													message: 'Vui lòng nhập URL hợp lệ',
-												},
-											]}
+											rules={[...rules.required, { type: 'url', message: 'Vui lòng nhập URL hợp lệ' }]}
 										>
 											<Input
 												placeholder='https://www.youtube.com/watch?v=... hoặc https://vimeo.com/...'
@@ -326,7 +359,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 										</Form.Item>
 									</Col>
 								</Row>
-
 								<Row gutter={[16, 0]}>
 									<Col span={24}>
 										<Form.Item
@@ -337,12 +369,7 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 												</span>
 											}
 											name='embed_code'
-											rules={[
-												{
-													max: 5000,
-													message: 'Mã nhúng tối đa 5000 ký tự',
-												},
-											]}
+											rules={[{ max: 5000, message: 'Mã nhúng tối đa 5000 ký tự' }]}
 										>
 											<TextArea
 												rows={4}
@@ -354,8 +381,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 									</Col>
 								</Row>
 							</Card>
-
-							{/* Transcript */}
 							<Card
 								type='inner'
 								title={
@@ -371,12 +396,7 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 										<Form.Item
 											label='Nội dung transcript'
 											name='transcript'
-											rules={[
-												{
-													max: 10000,
-													message: 'Transcript tối đa 10000 ký tự',
-												},
-											]}
+											rules={[{ max: 10000, message: 'Transcript tối đa 10000 ký tự' }]}
 										>
 											<TextArea
 												rows={6}
@@ -388,8 +408,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 									</Col>
 								</Row>
 							</Card>
-
-							{/* Cài đặt bảo mật */}
 							<Card
 								type='inner'
 								title={
@@ -427,20 +445,13 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 											}
 											name='encryption_key'
 											tooltip='Khóa để mã hóa video (nếu có)'
-											rules={[
-												{
-													max: 255,
-													message: 'Khóa mã hóa tối đa 255 ký tự',
-												},
-											]}
+											rules={[{ max: 255, message: 'Khóa mã hóa tối đa 255 ký tự' }]}
 										>
 											<Input.Password placeholder='Nhập khóa mã hóa (tùy chọn)' visibilityToggle />
 										</Form.Item>
 									</Col>
 								</Row>
-
 								<Divider />
-
 								<div
 									style={{
 										padding: '12px',
@@ -461,8 +472,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 							</Card>
 						</>
 					)}
-
-					{/* Cài đặt */}
 					<Card type='inner' title='⚙️ Cài đặt' style={{ marginBottom: 16 }}>
 						<Row gutter={[16, 0]}>
 							<Col span={12}>
@@ -486,7 +495,6 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 							</Col>
 						</Row>
 					</Card>
-
 					<div className='form-actions' style={{ marginTop: 24, textAlign: 'center' }}>
 						<Space size='large'>
 							<Button loading={submitting} htmlType='submit' type='primary' size='large'>

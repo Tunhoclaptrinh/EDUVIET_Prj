@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Popconfirm, Tag, Space, Popover, message } from 'antd';
 import TableBase from '@/components/Table';
 import { IColumn } from '@/components/Table/typing';
@@ -15,12 +15,49 @@ import {
 import LessonForm from './components/Form';
 import LessonDetail from './components/Detail';
 import { duyetLesson } from '@/services/Lesson';
+import { ipLocal } from '@/utils/ip';
 
 const LessonPage = () => {
-	const { handleEdit, deleteModel, danhSach, setRecord, getModel } = useModel('course.lesson');
+	const { handleEdit, deleteModel, setRecord, getModel } = useModel('course.lesson');
 	const { getModel: getVideoLesson } = useModel('course.videoLesson');
 	const [viewModalVisible, setViewModalVisible] = useState(false);
 	const [selectedRecord, setSelectedRecord] = useState<Lesson.IRecord | undefined>();
+	const [courses, setCourses] = useState<any[]>([]);
+	const [sections, setSections] = useState<any[]>([]);
+
+	// Fetch courses and sections
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const [courseResponse, sectionResponse] = await Promise.all([
+					fetch(`${ipLocal}/courses`),
+					fetch(`${ipLocal}/courseSections`),
+				]);
+				if (!courseResponse.ok || !sectionResponse.ok) {
+					throw new Error('Không thể tải dữ liệu khóa học hoặc chương');
+				}
+				const coursesData = await courseResponse.json();
+				const sectionsData = await sectionResponse.json();
+				setCourses(coursesData);
+				setSections(sectionsData);
+			} catch (error) {
+				message.error('Không thể tải dữ liệu khóa học hoặc chương');
+			}
+		};
+		fetchData();
+	}, []);
+
+	const getCourseTitle = (sectionId: string) => {
+		const section = sections.find((s) => s.id == sectionId);
+		if (!section) return 'Không xác định';
+		const course = courses.find((c) => c.id === String(section.course_id));
+		return course ? course.title : 'Không xác định';
+	};
+
+	const getSectionTitle = (sectionId: string) => {
+		const section = sections.find((s) => s.id == sectionId);
+		return section ? section.title : 'Không xác định';
+	};
 
 	const onView = (record: Lesson.IRecord) => {
 		setSelectedRecord(record);
@@ -39,25 +76,22 @@ const LessonPage = () => {
 		}
 	};
 
-	// Modified handleEdit to fetch video lesson data
 	const handleEditWithVideo = async (record: Lesson.IRecord) => {
 		try {
 			let updatedRecord = { ...record };
 			if (record.content_type === 'video') {
-				// Fetch video lesson data
 				const videoLesson = await getVideoLesson({ lesson_id: record.id });
 				updatedRecord = { ...record, videoLesson: videoLesson?.[0] || null };
 			}
 			handleEdit(updatedRecord);
-			setRecord(updatedRecord); // Ensure the model updates the record
+			setRecord(updatedRecord);
 		} catch (error) {
 			console.error('Error fetching video lesson:', error);
 			message.error('Không thể tải dữ liệu video bài học');
-			handleEdit(record); // Fallback to original record
+			handleEdit(record);
 		}
 	};
 
-	// Helper function to get status color
 	const getStatusColor = (status: string) => {
 		switch (status) {
 			case 'approved':
@@ -71,7 +105,6 @@ const LessonPage = () => {
 		}
 	};
 
-	// Helper function to get status text
 	const getStatusText = (status: string) => {
 		switch (status) {
 			case 'approved':
@@ -85,7 +118,6 @@ const LessonPage = () => {
 		}
 	};
 
-	// Helper function to get content type icon and text
 	const getContentTypeDisplay = (contentType: string) => {
 		switch (contentType) {
 			case 'video':
@@ -99,21 +131,32 @@ const LessonPage = () => {
 
 	const columns: IColumn<Lesson.IRecord>[] = [
 		{
+			title: 'Khóa học',
+			dataIndex: 'section_id',
+			width: 300,
+			sortable: true,
+			filterType: 'string',
+			render: (sectionId: string) => (
+				<div style={{ fontWeight: 500, color: '#1890ff' }}>{getCourseTitle(sectionId)}</div>
+			),
+		},
+		{
+			title: 'Chương',
+			dataIndex: 'section_id',
+			width: 300,
+			sortable: true,
+			filterType: 'string',
+			render: (sectionId: string) => (
+				<div style={{ fontWeight: 500, color: '#1890ff' }}>{getSectionTitle(sectionId)}</div>
+			),
+		},
+		{
 			title: 'Tiêu đề bài học',
 			dataIndex: 'title',
 			width: 300,
 			sortable: true,
 			filterType: 'string',
-			render: (val) => (
-				<div
-					style={{
-						fontWeight: 500,
-						color: '#1890ff',
-					}}
-				>
-					{val}
-				</div>
-			),
+			render: (val) => <div style={{ fontWeight: 500, color: '#1890ff' }}>{val}</div>,
 		},
 		{
 			title: 'Mô tả',
@@ -145,7 +188,7 @@ const LessonPage = () => {
 			width: 120,
 			sortable: true,
 			filterType: 'select',
-			filterData: ['video', 'Văn bản', 'text'],
+			filterData: ['video', 'text'],
 			render: (contentType: string) => {
 				const display = getContentTypeDisplay(contentType);
 				return (
@@ -196,15 +239,15 @@ const LessonPage = () => {
 				<Space>
 					<ButtonExtend tooltip='Xem chi tiết' onClick={() => onView(record)} type='link' icon={<EyeOutlined />} />
 					<Popconfirm
-						title='Bạn có chắc chắn muốn duyệt hồ sơ này?'
+						title='Bạn có chắc chắn muốn duyệt bài học này?'
 						placement='topLeft'
 						onConfirm={async () => {
 							try {
 								await duyetLesson(record);
-								message.success('Duyệt hồ sơ thành công!');
+								message.success('Duyệt bài học thành công!');
 								getModel();
 							} catch (error) {
-								message.error('Duyệt hồ sơ thất bại!');
+								message.error('Duyệt bài học thất bại!');
 							}
 						}}
 					>
@@ -246,8 +289,6 @@ const LessonPage = () => {
 				deleteMany
 				rowSelection
 			/>
-
-			{/* Modal xem chi tiết */}
 			{selectedRecord && (
 				<LessonDetail
 					isVisible={viewModalVisible}
@@ -255,6 +296,8 @@ const LessonPage = () => {
 					onEdit={onEditFromView}
 					record={selectedRecord}
 					title='bài học'
+					courses={courses}
+					sections={sections}
 				/>
 			)}
 		</div>

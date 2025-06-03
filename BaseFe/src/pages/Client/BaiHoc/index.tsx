@@ -80,7 +80,7 @@ const BaiHocPage: React.FC = () => {
 
 	// Dữ liệu điều hướng sidebar
 	const sidebarNavItems = [
-		{ key: '1', icon: <HomeOutlined />, text: 'Trang chủ', to: '/' },
+		{ key: '1', icon: <HomeOutlined />, text: 'Trang chủ', to: '/public/trang-chu' },
 		{ key: '2', icon: <ReadOutlined />, text: 'Lập trình', to: '/programming' },
 		{ key: '3', icon: <FileTextOutlined />, text: 'Bài viết', to: '/articles' },
 	];

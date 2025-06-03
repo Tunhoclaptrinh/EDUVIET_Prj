@@ -7,12 +7,30 @@ import ButtonExtend from '@/components/Table/ButtonExtend';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import CourseSectionForm from './components/Form';
 import CourseSectionDetail from './components/Detail';
+import { ipLocal } from '@/utils/ip';
 
 const SectionPage = () => {
 	const { handleEdit, deleteModel, danhSach } = useModel('course.courseSection');
-	const { danhSach: courseList } = useModel('course.courses');
 	const [viewModalVisible, setViewModalVisible] = useState(false);
 	const [selectedRecord, setSelectedRecord] = useState<CourseSection.IRecord | undefined>();
+	const [courses, setCourses] = useState<any[]>([]);
+
+	// Fetch courses and sections
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const [courseResponse] = await Promise.all([fetch(`${ipLocal}/courses`)]);
+				if (!courseResponse.ok) {
+					throw new Error('Không thể tải dữ liệu khóa học hoặc chương');
+				}
+				const coursesData = await courseResponse.json();
+				setCourses(coursesData);
+			} catch (error) {
+				message.error('Không thể tải dữ liệu khóa học hoặc chương');
+			}
+		};
+		fetchData();
+	}, []);
 
 	const onView = (record: CourseSection.IRecord) => {
 		setSelectedRecord(record);
@@ -31,9 +49,8 @@ const SectionPage = () => {
 		}
 	};
 
-	// Tìm tên khóa học theo ID
 	const getCourseName = (courseId: string | number) => {
-		const course = courseList?.find((course: any) => String(course.id) === String(courseId));
+		const course = courses?.find((course: any) => String(course.id) == String(courseId));
 		return course?.title || course?.name || 'Không xác định';
 	};
 
@@ -132,8 +149,6 @@ const SectionPage = () => {
 				deleteMany
 				rowSelection
 			/>
-
-			{/* Modal xem chi tiết */}
 			{selectedRecord && (
 				<CourseSectionDetail
 					isVisible={viewModalVisible}
@@ -141,6 +156,7 @@ const SectionPage = () => {
 					onEdit={onEditFromView}
 					record={selectedRecord}
 					title='chương học'
+					courseList={courses}
 				/>
 			)}
 		</div>

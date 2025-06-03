@@ -3,6 +3,7 @@ import { Button, Card, Col, Form, Input, Row, Select, message, Space, InputNumbe
 import { useIntl, useModel } from 'umi';
 import rules from '@/utils/rules';
 import { resetFieldsForm } from '@/utils/utils';
+import CourseSelect from '../../Course/components/Select';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -13,14 +14,8 @@ interface CourseSectionFormProps {
 
 const CourseSectionForm: React.FC<CourseSectionFormProps> = ({ title = 'chương học', ...props }) => {
 	const { record, setVisibleForm, edit, postModel, putModel, visibleForm } = useModel('course.courseSection');
-	const { danhSach: courseList, getAllModel: getAllCourses } = useModel('course.courses');
 	const [form] = Form.useForm();
 	const [submitting, setSubmitting] = useState(false);
-
-	// Load courses when component mounts
-	useEffect(() => {
-		getAllCourses();
-	}, [getAllCourses]);
 
 	// Reset form and populate data when opening
 	useEffect(() => {
@@ -132,20 +127,7 @@ const CourseSectionForm: React.FC<CourseSectionFormProps> = ({ title = 'chương
 						<Row gutter={[16, 0]}>
 							<Col span={12}>
 								<Form.Item label='Khóa học' name='course_id' rules={[...rules.required]}>
-									<Select
-										placeholder='Chọn khóa học'
-										showSearch
-										optionFilterProp='children'
-										filterOption={(input, option) =>
-											(option?.children as unknown as string)?.toLowerCase().includes(input.toLowerCase())
-										}
-									>
-										{courseList?.map((course: any) => (
-											<Option key={course.id} value={course.id}>
-												{course.title || course.name}
-											</Option>
-										))}
-									</Select>
+									<CourseSelect />
 								</Form.Item>
 							</Col>
 							<Col span={12}>

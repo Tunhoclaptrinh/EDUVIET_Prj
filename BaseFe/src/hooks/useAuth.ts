@@ -54,7 +54,6 @@ const useAuth = () => {
 					}
 					const userData = await response.json();
 					// Map API fields to IUser
-					const [ho, ...tenParts] = (userData.full_name || '').split(' ');
 					user = {
 						id: userData.id,
 						email: userData.email,
@@ -115,7 +114,6 @@ const useAuth = () => {
 			}
 
 			// Map API fields to IUser
-			const [ho, ...tenParts] = (user.fullName || '').split(' ');
 			const userData: IUser = {
 				id: user.id,
 				email: user.email,

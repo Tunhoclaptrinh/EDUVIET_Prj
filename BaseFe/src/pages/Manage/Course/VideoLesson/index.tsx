@@ -16,11 +16,35 @@ import {
 } from '@ant-design/icons';
 import VideoLessonForm from './Components/Form';
 import VideoLessonDetail from './Components/Detail';
+import { ipLocal } from '@/utils/ip';
 
 const VideoLessonPage = () => {
 	const { handleEdit, deleteModel, danhSach } = useModel('course.videoLesson');
 	const [viewModalVisible, setViewModalVisible] = useState(false);
 	const [selectedRecord, setSelectedRecord] = useState<VideoLesson.IRecord | undefined>();
+	const [lessons, setLessons] = useState<any[]>([]);
+
+	// Fetch courses and sections
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const [courseResponse] = await Promise.all([fetch(`${ipLocal}/courses`)]);
+				if (!courseResponse.ok) {
+					throw new Error('Không thể tải dữ liệu khóa học hoặc chương');
+				}
+				const coursesData = await courseResponse.json();
+				setLessons(coursesData);
+			} catch (error) {
+				message.error('Không thể tải dữ liệu khóa học hoặc chương');
+			}
+		};
+		fetchData();
+	}, []);
+
+	const getLessonTitle = (lessonId: string | number) => {
+		const lesson = lessons.find((l: any) => String(l.id) === String(lessonId));
+		return lesson?.title || 'Không xác định';
+	};
 
 	const onView = (record: VideoLesson.IRecord) => {
 		setSelectedRecord(record);
@@ -69,12 +93,14 @@ const VideoLessonPage = () => {
 
 	const columns: IColumn<VideoLesson.IRecord>[] = [
 		{
-			title: 'ID Bài học',
+			title: 'Bài học',
 			dataIndex: 'lesson_id',
-			width: 100,
+			width: 200,
 			sortable: true,
-			align: 'center',
-			render: (val) => <Tag color='blue'>#{val}</Tag>,
+			filterType: 'string',
+			render: (lessonId: string | number) => (
+				<div style={{ fontWeight: 500, color: '#1890ff' }}>{getLessonTitle(lessonId)}</div>
+			),
 		},
 		{
 			title: 'Video URL',

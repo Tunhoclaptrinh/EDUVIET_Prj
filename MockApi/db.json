@@ -89,6 +89,20 @@
       "is_active": true,
       "preferred_language": "vi",
       "ui_theme": "dark"
+    },
+    {
+      "id": "d17d",
+      "email": "admin@gmail.com",
+      "fullName": "Nguyễn Tiến Tuấn",
+      "password": "123456",
+      "ngayCap": null,
+      "noiCap": null,
+      "hoKhauThuongTru": {
+        "tinh_ThanhPho": null,
+        "quanHuyen": null,
+        "xaPhuong": null,
+        "diaChi": null
+      }
     }
   ],
   "userSettings": [
@@ -331,6 +345,13 @@
       "title": "Giao tiếp hàng ngày",
       "description": "Các tình huống giao tiếp thường gặp trong cuộc sống.",
       "order_number": 2
+    },
+    {
+      "id": "f478",
+      "title": "test",
+      "description": "test",
+      "course_id": "1",
+      "order_number": 4
     }
   ],
   "lessons": [
@@ -361,7 +382,6 @@
       "updated_at": "2025-01-16T00:00:00Z"
     },
     {
-      "id": "3",
       "section_id": 1,
       "title": "Tạo dự án React đầu tiên",
       "description": "Tạo và chạy dự án React đầu tiên của bạn với Create React App.",
@@ -370,8 +390,9 @@
       "order_number": 3,
       "is_free_preview": false,
       "status": "approved",
+      "id": "3",
       "created_at": "2025-01-17T00:00:00Z",
-      "updated_at": "2025-01-17T00:00:00Z"
+      "updated_at": "2025-06-03T03:57:17.136Z"
     },
     {
       "id": "4",
@@ -411,6 +432,19 @@
       "id": "6",
       "created_at": "2025-02-10T00:00:00Z",
       "updated_at": "2025-06-03T03:21:01.211Z"
+    },
+    {
+      "id": "86d2",
+      "section_id": "f478",
+      "title": "Tesst",
+      "description": "aa",
+      "content_type": "video",
+      "duration_minutes": 2,
+      "order_number": 1,
+      "is_free_preview": false,
+      "status": "approved",
+      "created_at": "2025-06-03T05:02:31.310Z",
+      "updated_at": "2025-06-03T05:02:31.310Z"
     }
   ],
   "videoLessons": [
@@ -435,13 +469,14 @@
       "updated_at": "2025-06-02T12:12:14.083Z"
     },
     {
-      "id": "3",
-      "lesson_id": 3,
+      "lesson_id": "3",
       "video_url": "https://storage.eduviet.com/videos/first-react-app.mp4",
-      "embed_code": "<iframe src=\"https://youtube.com/embed/ghi789\"></iframe>",
+      "embed_code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/P846ckOmud8?si=itgslKtbLj1Y-HJo\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
       "transcript": "Hôm nay chúng ta sẽ tạo ứng dụng React đầu tiên...",
       "prevent_skipping": true,
-      "encryption_key": "enc_key_345678"
+      "encryption_key": "enc_key_345678",
+      "id": "3",
+      "updated_at": "2025-06-03T03:57:17.288Z"
     },
     {
       "id": "4",
@@ -461,6 +496,17 @@
       "encryption_key": "enc_key_567890",
       "id": "5",
       "updated_at": "2025-06-03T03:21:01.371Z"
+    },
+    {
+      "id": "e758",
+      "lesson_id": "86d2",
+      "video_url": "https://youtu.be/8UWIUo2feZY?si=nGJi_uL4MyUyaQad",
+      "embed_code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/8UWIUo2feZY?si=WAGUnskiuWqG7k8C\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+      "transcript": null,
+      "prevent_skipping": true,
+      "encryption_key": null,
+      "created_at": "2025-06-03T05:02:31.491Z",
+      "updated_at": "2025-06-03T05:02:31.491Z"
     }
   ],
   "articleLessons": [
@@ -670,6 +716,17 @@
       "last_accessed": "2025-05-04T21:30:00Z",
       "completion_percentage": 15,
       "expiry_date": "2026-04-05T00:00:00Z",
+      "status": "active"
+    },
+    {
+      "id": "943d",
+      "user_id": null,
+      "course_id": 1,
+      "enrollment_date": "2025-06-03T05:31:10.491Z",
+      "is_active": true,
+      "last_accessed": "2025-06-03T05:31:10.491Z",
+      "completion_percentage": 0,
+      "expiry_date": "2026-06-03T05:31:10.491Z",
       "status": "active"
     }
   ],

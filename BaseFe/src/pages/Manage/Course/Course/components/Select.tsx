@@ -45,7 +45,7 @@ const CourseSelect: React.FC<CourseSelectProps> = ({
 		};
 
 		fetchCourses();
-	}, [getAllModel, onChange, defaultFirst, value]);
+	}, []);
 
 	// Lọc khóa học theo trạng thái
 	const filteredCourses = useMemo(() => {

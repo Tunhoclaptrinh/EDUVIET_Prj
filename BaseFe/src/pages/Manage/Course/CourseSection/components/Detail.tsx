@@ -8,6 +8,7 @@ interface CourseSectionDetailProps {
 	onEdit: () => void;
 	record?: CourseSection.IRecord;
 	title?: string;
+	courseList?: any[];
 }
 
 const CourseSectionDetail: React.FC<CourseSectionDetailProps> = ({
@@ -16,8 +17,14 @@ const CourseSectionDetail: React.FC<CourseSectionDetailProps> = ({
 	onEdit,
 	record,
 	title = 'chương học',
+	courseList = [],
 }) => {
 	if (!record) return null;
+
+	const getCourseName = (courseId: string | number) => {
+		const course = courseList?.find((course: any) => String(course.id) === String(courseId));
+		return course?.title || course?.name || 'Không xác định';
+	};
 
 	return (
 		<Modal
@@ -40,19 +47,15 @@ const CourseSectionDetail: React.FC<CourseSectionDetailProps> = ({
 				<Descriptions.Item label='Tiêu đề chương' span={2}>
 					<strong style={{ fontSize: 18 }}>{record.title}</strong>
 				</Descriptions.Item>
-
 				<Descriptions.Item label='ID' span={2}>
 					<Tag color='blue'>{record.id}</Tag>
 				</Descriptions.Item>
-
 				<Descriptions.Item label='Khóa học'>
-					<Tag color='green'>{record.course_id}</Tag>
+					<Tag color='green'>{getCourseName(record.course_id)}</Tag>
 				</Descriptions.Item>
-
 				<Descriptions.Item label='Thứ tự'>
 					<Tag color='orange'>{record.order_number}</Tag>
 				</Descriptions.Item>
-
 				<Descriptions.Item label='Mô tả' span={2}>
 					<div
 						style={{
