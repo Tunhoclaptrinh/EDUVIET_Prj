@@ -27,9 +27,9 @@ const TrangChuPage: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const sidebarNavItems: SidebarNavItem[] = [
-		{ key: '1', icon: <HomeOutlined />, text: 'Trang chủ', to: '/' },
+		{ key: '1', icon: <HomeOutlined />, text: 'Trang chủ', to: '/public/trang-chu' },
 		{ key: '2', icon: <ReadOutlined />, text: 'Lập trình', to: '/programming' },
-		{ key: '3', icon: <FileTextOutlined />, text: 'Bài viết', to: '/articles' },
+		{ key: '3', icon: <FileTextOutlined />, text: 'Bài viết', to: '/public/bai-viet' },
 	];
 
 	const handleVoiceClick = (): void => {
@@ -314,56 +314,58 @@ const TrangChuPage: React.FC = () => {
 							<Row gutter={[16, 16]} justify='start'>
 								{blogPosts.slice(0, 8).map((article, index) => (
 									<Col xs={24} sm={12} md={8} lg={6} key={article.id}>
-										<Card
-											hoverable
-											cover={
-												<img
-													alt={article.title}
-													src={
-														article.thumbnail ||
-														'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
-													}
-													style={{
-														borderRadius: '8px 8px 0 0',
-														height: '180px',
-														objectFit: 'cover',
-													}}
-												/>
-											}
-										>
-											<Title level={5} ellipsis={{ rows: 2 }}>
-												{article.title}
-											</Title>
-											<Paragraph ellipsis={{ rows: 2 }} style={{ color: '#666' }}>
-												{article.excerpt}
-											</Paragraph>
-											<div
-												style={{
-													display: 'flex',
-													justifyContent: 'space-between',
-													alignItems: 'center',
-													marginTop: '12px',
-												}}
+										<Link to={`/public/bai-viet/chi-tiet/${article.id}`}>
+											<Card
+												hoverable
+												cover={
+													<img
+														alt={article.title}
+														src={
+															article.thumbnail ||
+															'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+														}
+														style={{
+															borderRadius: '8px 8px 0 0',
+															height: '180px',
+															objectFit: 'cover',
+														}}
+													/>
+												}
 											>
+												<Title level={5} ellipsis={{ rows: 2 }}>
+													{article.title}
+												</Title>
+												<Paragraph ellipsis={{ rows: 2 }} style={{ color: '#666' }}>
+													{article.excerpt}
+												</Paragraph>
 												<div
 													style={{
 														display: 'flex',
+														justifyContent: 'space-between',
 														alignItems: 'center',
-														gap: '8px',
+														marginTop: '12px',
 													}}
 												>
-													<img
-														src='https://avatars.githubusercontent.com/u/146623045?v=4'
-														alt='author'
-														style={{ width: '24px', borderRadius: '50%' }}
-													/>
-													<span style={{ fontSize: '12px', color: '#666' }}>Tác giả</span>
+													<div
+														style={{
+															display: 'flex',
+															alignItems: 'center',
+															gap: '8px',
+														}}
+													>
+														<img
+															src='https://avatars.githubusercontent.com/u/146623045?v=4'
+															alt='author'
+															style={{ width: '24px', borderRadius: '50%' }}
+														/>
+														<span style={{ fontSize: '12px', color: '#666' }}>Tác giả</span>
+													</div>
+													<span style={{ fontSize: '12px', color: '#888' }}>
+														{new Date(article.published_at).toLocaleDateString('vi-VN')}
+													</span>
 												</div>
-												<span style={{ fontSize: '12px', color: '#888' }}>
-													{new Date(article.published_at).toLocaleDateString('vi-VN')}
-												</span>
-											</div>
-										</Card>
+											</Card>
+										</Link>
 									</Col>
 								))}
 							</Row>

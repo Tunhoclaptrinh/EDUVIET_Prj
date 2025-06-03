@@ -65,6 +65,13 @@
 				layout: false,
 			},
 			{
+				path: '/public/bai-viet/chi-tiet/:id',
+				name: 'Chi Tiết Bài Viết',
+				component: './Client/ChiTietBaiViet',
+				icon: 'FileTextOutlined',
+				layout: false,
+			},
+			{
 				path: '/public/bai-hoc',
 				name: 'Bài Học',
 				component: './Client/BaiHoc',
