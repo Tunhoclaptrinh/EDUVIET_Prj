@@ -120,7 +120,11 @@ const BaiHocPage: React.FC = () => {
 		try {
 			const videoResponse = await axios.get<VideoLesson[]>(`http://localhost:3000/videoLessons?lesson_id=${lesson.id}`);
 			if (videoResponse.data.length > 0) {
-				setCurrentVideo(videoResponse.data[0]);
+				const video = videoResponse.data[0];
+				console.log('Fetched video lesson:', video); // Debug embed code
+				setCurrentVideo(video);
+			} else {
+				setCurrentVideo(null);
 			}
 		} catch (error) {
 			console.error('Error fetching video data:', error);
@@ -188,7 +192,9 @@ const BaiHocPage: React.FC = () => {
 									`http://localhost:3000/videoLessons?lesson_id=${lessonId}`,
 								);
 								if (videoResponse.data.length > 0) {
-									setCurrentVideo(videoResponse.data[0]);
+									const video = videoResponse.data[0];
+									console.log('Fetched video for lessonId:', video); // Debug embed code
+									setCurrentVideo(video);
 								}
 							}
 						} else if (sortedLessons.length > 0) {
@@ -199,7 +205,9 @@ const BaiHocPage: React.FC = () => {
 								`http://localhost:3000/videoLessons?lesson_id=${firstLesson.id}`,
 							);
 							if (videoResponse.data.length > 0) {
-								setCurrentVideo(videoResponse.data[0]);
+								const video = videoResponse.data[0];
+								console.log('Fetched video for first lesson:', video); // Debug embed code
+								setCurrentVideo(video);
 							}
 						}
 					} catch (error) {
@@ -282,15 +290,41 @@ const BaiHocPage: React.FC = () => {
 									style={{
 										aspectRatio: '16/9',
 										width: '100%',
-										overflow: 'hidden',
-										display: 'block',
+										height: 'auto',
 										position: 'relative',
+										overflow: 'hidden',
 									}}
 								>
 									{currentVideo && currentVideo.embed_code ? (
-										<div dangerouslySetInnerHTML={{ __html: currentVideo.embed_code }} />
+										<iframe
+											src={currentVideo.embed_code.match(/src=["'](.*?)["']/i)?.[1] || currentVideo.video_url}
+											title='Video lesson'
+											frameBorder='0'
+											allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+											referrerPolicy='strict-origin-when-cross-origin'
+											allowFullScreen
+											style={{
+												width: '100%',
+												height: '100%',
+												position: 'absolute',
+												top: 0,
+												left: 0,
+												border: 'none',
+											}}
+										/>
 									) : currentVideo && currentVideo.video_url ? (
-										<video width='100%' height='100%' controls style={{ width: '100%', height: '100%' }}>
+										<video
+											width='100%'
+											height='100%'
+											controls
+											style={{
+												width: '100%',
+												height: '100%',
+												position: 'absolute',
+												top: 0,
+												left: 0,
+											}}
+										>
 											<source src={currentVideo.video_url} type='video/mp4' />
 											Trình duyệt của bạn không hỗ trợ video.
 										</video>
@@ -305,8 +339,15 @@ const BaiHocPage: React.FC = () => {
 											allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
 											referrerPolicy='strict-origin-when-cross-origin'
 											allowFullScreen
-											style={{ width: '100%', height: '100%', display: 'block' }}
-										></iframe>
+											style={{
+												width: '100%',
+												height: '100%',
+												position: 'absolute',
+												top: 0,
+												left: 0,
+												border: 'none',
+											}}
+										/>
 									)}
 
 									{!completedLessons.has(currentLesson?.id || '') && (
@@ -362,10 +403,10 @@ const BaiHocPage: React.FC = () => {
 										borderRadius: '8px',
 										overflow: 'hidden',
 										marginBottom: '16px',
-										boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+										boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 									}}
 								>
-									<Title level={4} style={{ fontWeight: 'bold', margin: '16px' }}>
+									<Title level={2} style={{ margin: '16px', fontWeight: '20px' }}>
 										Nội dung khóa học
 									</Title>
 									<div style={{ margin: '0 16px 16px' }}>
@@ -394,8 +435,8 @@ const BaiHocPage: React.FC = () => {
 													}}
 													onClick={() => toggleExpand(section.id)}
 												>
-													<div style={{ display: 'flex', alignItems: 'center' }}>
-														<div
+													<span style={{ display: 'flex', alignItems: 'center' }}>
+														<span
 															style={{
 																marginRight: '12px',
 																color: expandedLessons.includes(section.id) ? '#f05123' : '#666',
@@ -404,11 +445,11 @@ const BaiHocPage: React.FC = () => {
 															}}
 														>
 															<PlusOutlined />
-														</div>
+														</span>
 														<Text strong style={{ color: expandedLessons.includes(section.id) ? '#f05123' : '#333' }}>
 															{section.order_number}. {section.title}
 														</Text>
-													</div>
+													</span>
 													<Text style={{ color: '#666' }}>
 														{lessons[section.id] ? lessons[section.id].length : '...'} bài học
 													</Text>
@@ -438,7 +479,7 @@ const BaiHocPage: React.FC = () => {
 																		color: currentLesson?.id === lesson.id ? '#f05123' : '#333',
 																	}}
 																>
-																	<div
+																	<span
 																		style={{
 																			marginRight: '12px',
 																			width: '20px',
@@ -452,7 +493,7 @@ const BaiHocPage: React.FC = () => {
 																		{completedLessons.has(lesson.id) ? (
 																			<CheckCircleOutlined style={{ color: '#4caf50' }} />
 																		) : (
-																			<div
+																			<span
 																				style={{
 																					width: '16px',
 																					height: '16px',
@@ -463,7 +504,7 @@ const BaiHocPage: React.FC = () => {
 																				}}
 																			>
 																				{currentLesson?.id === lesson.id && (
-																					<div
+																					<span
 																						style={{
 																							position: 'absolute',
 																							top: '3px',
@@ -475,9 +516,9 @@ const BaiHocPage: React.FC = () => {
 																						}}
 																					/>
 																				)}
-																			</div>
+																			</span>
 																		)}
-																	</div>
+																	</span>
 																	<div>
 																		<Text style={{ color: currentLesson?.id === lesson.id ? '#f05123' : '#333' }}>
 																			{lesson.order_number}. {lesson.title}

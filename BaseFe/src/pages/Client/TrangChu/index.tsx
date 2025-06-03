@@ -7,15 +7,8 @@ import Sidebar from '@/components/Siderbar';
 import { Button, Card, Col, Row, Typography, Layout, Spin, message } from 'antd';
 import { Link } from 'umi';
 
-import {
-	HomeOutlined,
-	ReadOutlined,
-	FileTextOutlined,
-	EyeOutlined,
-	ClockCircleOutlined,
-	UserOutlined,
-	StarOutlined,
-} from '@ant-design/icons';
+import { HomeOutlined, ReadOutlined, FileTextOutlined, UserOutlined, StarOutlined } from '@ant-design/icons';
+import { ipLocal } from '@/utils/ip';
 
 const { Content } = Layout;
 const { Title, Paragraph } = Typography;
@@ -49,9 +42,9 @@ const TrangChuPage: React.FC = () => {
 			try {
 				setLoading(true);
 				const [coursesRes, categoriesRes, blogPostsRes] = await Promise.all([
-					axios.get<Course.IRecord[]>('http://localhost:3000/courses'),
-					axios.get<Category.IRecord[]>('http://localhost:3000/categories'),
-					axios.get<BlogPost.IRecord[]>('http://localhost:3000/blogPosts'),
+					axios.get<Course.IRecord[]>(`${ipLocal}/courses`),
+					axios.get<Category.IRecord[]>(`${ipLocal}/categories`),
+					axios.get<BlogPost.IRecord[]>(`${ipLocal}/blogPosts`),
 				]);
 
 				setCourses(coursesRes.data);

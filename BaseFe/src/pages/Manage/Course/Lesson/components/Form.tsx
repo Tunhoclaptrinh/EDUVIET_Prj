@@ -26,24 +26,40 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 
 	// Reset form and populate data when opening
 	useEffect(() => {
+		console.log('Form useEffect triggered. visibleForm:', visibleForm, 'record:', record);
 		if (!visibleForm) {
+			console.log('Resetting form due to visibleForm being false');
 			resetFieldsForm(form);
-		} else if (record?.id) {
+		} else if (record) {
 			const formData = {
-				...record,
-				// Populate video lesson fields if available
-				video_url: record.videoLesson?.video_url || '',
-				embed_code: record.videoLesson?.embed_code || '',
-				transcript: record.videoLesson?.transcript || '',
-				prevent_skipping: record.videoLesson?.prevent_skipping || false,
-				encryption_key: record.videoLesson?.encryption_key || '',
+				// Lesson fields
+				title: record.title || '',
+				section_id: record.section_id || undefined,
+				content_type: record.content_type || undefined,
+				duration_minutes: record.duration_minutes || undefined,
+				order_number: record.order_number || undefined,
+				description: record.description || '',
+				is_free_preview: record.is_free_preview || false,
+				status: record.status || 'pending',
+				// Video lesson fields
+				video_url: record.videoLesson?.video_url || record.video_lesson?.video_url || '',
+				embed_code: record.videoLesson?.embed_code || record.video_lesson?.embed_code || '',
+				transcript: record.videoLesson?.transcript || record.video_lesson?.transcript || '',
+				prevent_skipping: record.videoLesson?.prevent_skipping || record.video_lesson?.prevent_skipping || false,
+				encryption_key: record.videoLesson?.encryption_key || record.video_lesson?.encryption_key || '',
 			};
+
+			console.log('Setting form values:', formData);
 			form.setFieldsValue(formData);
+		} else {
+			console.log('No record provided, resetting form');
+			resetFieldsForm(form);
 		}
-	}, [record?.id, visibleForm, form]);
+	}, [record, visibleForm, form]);
 
 	// Helper function to detect video platform
 	const detectVideoPlatform = (url: string) => {
+		if (!url) return null;
 		if (url.includes('youtube.com') || url.includes('youtu.be')) {
 			return 'YouTube';
 		} else if (url.includes('vimeo.com')) {
@@ -163,15 +179,15 @@ const LessonForm: React.FC<LessonFormProps> = ({ title = 'bài học', ...props 
 				let videoSubmitData: VideoLesson.IRecord;
 				let videoResult;
 
-				if (edit && record?.videoLesson?.id) {
+				if (edit && (record.videoLesson?.id || record.video_lesson?.id)) {
 					// Update existing video lesson
 					videoSubmitData = {
 						...baseVideoData,
-						id: record.videoLesson.id,
-						created_at: record.videoLesson.created_at,
+						id: record.videoLesson?.id || record.video_lesson?.id,
+						created_at: record.videoLesson?.created_at || record.video_lesson?.created_at,
 						updated_at: new Date().toISOString(),
 					};
-					videoResult = await putVideoModel(record.videoLesson.id, videoSubmitData);
+					videoResult = await putVideoModel(videoSubmitData.id, videoSubmitData);
 				} else {
 					// Create new video lesson
 					const now = new Date().toISOString();

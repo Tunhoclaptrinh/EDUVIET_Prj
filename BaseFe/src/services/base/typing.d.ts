@@ -3,27 +3,43 @@ import type { EModuleKey, EScopeFile, ESettingKey, EStorageFile } from './consta
 
 declare module Login {
 	export interface IUser {
-		sub: string; // SsoId 'b323b6c8-2f1e-4a9b-941b-f1e466b9ba40';
-		ssoId: string;
+		// sub: string; // SsoId 'b323b6c8-2f1e-4a9b-941b-f1e466b9ba40';
+		// ssoId: string;
+		// email: string;
+		// email_verified: boolean; // true;
+		// realm_access: {
+		// 	roles: string[];
+		// 	//  [
+		// 	// 	'QUAN_TRI_VIEN',
+		// 	// 	'strapi.super_admin',
+		// 	// 	'strapi.Editor',
+		// 	// 	'offline_access',
+		// 	// 	'admin',
+		// 	// 	'uma_authorization',
+		// 	// 	'default-roles-vwa',
+		// 	// ];
+		// };
+		// name: string; // 'Administrator';
+		// preferred_username: string; // 'admin';
+		// given_name: string; // 'Administrator';
+		// family_name: string; // '';
+		// picture: string; // 'https://images2.thanhnien.vn/528068263637045248/2023/10/14/ronaldo-1697254043939678025874.jpeg';
+		id: string;
 		email: string;
-		email_verified: boolean; // true;
-		realm_access: {
-			roles: string[];
-			//  [
-			// 	'QUAN_TRI_VIEN',
-			// 	'strapi.super_admin',
-			// 	'strapi.Editor',
-			// 	'offline_access',
-			// 	'admin',
-			// 	'uma_authorization',
-			// 	'default-roles-vwa',
-			// ];
-		};
-		name: string; // 'Administrator';
-		preferred_username: string; // 'admin';
-		given_name: string; // 'Administrator';
-		family_name: string; // '';
-		picture: string; // 'https://images2.thanhnien.vn/528068263637045248/2023/10/14/ronaldo-1697254043939678025874.jpeg';
+		phone_number?: number;
+		password: string;
+		full_name: string;
+		birth_year: number;
+		role: 'admin' | 'user';
+		profile_picture: string;
+		created_at: string;
+		updated_at: string;
+		last_login: string;
+		auth_provider: string;
+		auth_provider_id: string;
+		is_active: boolean;
+		preferred_language: 'vi' | 'en';
+		ui_theme: string;
 	}
 
 	export interface IPermission {

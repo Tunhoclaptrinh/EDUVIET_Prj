@@ -60,7 +60,7 @@ const VideoLessonDetail: React.FC<VideoLessonDetailProps> = ({
 					<Button key='back' onClick={onClose}>
 						Đóng
 					</Button>
-					<Button key='edit' type='primary' onClick={onEdit}>
+					<Button key='edit' type='primary' onClick={onEdit} disabled>
 						Chỉnh sửa
 					</Button>
 				</div>

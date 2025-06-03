@@ -4,12 +4,21 @@ import TableBase from '@/components/Table';
 import { IColumn } from '@/components/Table/typing';
 import { useModel } from 'umi';
 import ButtonExtend from '@/components/Table/ButtonExtend';
-import { DeleteOutlined, EditOutlined, EyeOutlined, PlayCircleOutlined, FileTextOutlined } from '@ant-design/icons';
+import {
+	DeleteOutlined,
+	EditOutlined,
+	EyeOutlined,
+	PlayCircleOutlined,
+	FileTextOutlined,
+	CheckOutlined,
+} from '@ant-design/icons';
 import LessonForm from './components/Form';
 import LessonDetail from './components/Detail';
+import { duyetLesson } from '@/services/Lesson';
 
 const LessonPage = () => {
-	const { handleEdit, deleteModel, danhSach } = useModel('course.lesson');
+	const { handleEdit, deleteModel, danhSach, setRecord, getModel } = useModel('course.lesson');
+	const { getModel: getVideoLesson } = useModel('course.videoLesson');
 	const [viewModalVisible, setViewModalVisible] = useState(false);
 	const [selectedRecord, setSelectedRecord] = useState<Lesson.IRecord | undefined>();
 
@@ -26,7 +35,25 @@ const LessonPage = () => {
 	const onEditFromView = () => {
 		setViewModalVisible(false);
 		if (selectedRecord) {
-			handleEdit(selectedRecord);
+			handleEditWithVideo(selectedRecord);
+		}
+	};
+
+	// Modified handleEdit to fetch video lesson data
+	const handleEditWithVideo = async (record: Lesson.IRecord) => {
+		try {
+			let updatedRecord = { ...record };
+			if (record.content_type === 'video') {
+				// Fetch video lesson data
+				const videoLesson = await getVideoLesson({ lesson_id: record.id });
+				updatedRecord = { ...record, videoLesson: videoLesson?.[0] || null };
+			}
+			handleEdit(updatedRecord);
+			setRecord(updatedRecord); // Ensure the model updates the record
+		} catch (error) {
+			console.error('Error fetching video lesson:', error);
+			message.error('Không thể tải dữ liệu video bài học');
+			handleEdit(record); // Fallback to original record
 		}
 	};
 
@@ -149,7 +176,6 @@ const LessonPage = () => {
 			dataIndex: 'is_free_preview',
 			width: 120,
 			align: 'center',
-
 			render: (isFree: boolean) => <Tag color={isFree ? 'green' : 'default'}>{isFree ? 'Có' : 'Không'}</Tag>,
 		},
 		{
@@ -164,12 +190,38 @@ const LessonPage = () => {
 		{
 			title: 'Thao tác',
 			align: 'center',
-			width: 120,
+			width: 160,
 			fixed: 'right',
 			render: (_, record) => (
 				<Space>
 					<ButtonExtend tooltip='Xem chi tiết' onClick={() => onView(record)} type='link' icon={<EyeOutlined />} />
-					<ButtonExtend tooltip='Chỉnh sửa' onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+					<Popconfirm
+						title='Bạn có chắc chắn muốn duyệt hồ sơ này?'
+						placement='topLeft'
+						onConfirm={async () => {
+							try {
+								await duyetLesson(record);
+								message.success('Duyệt hồ sơ thành công!');
+								getModel();
+							} catch (error) {
+								message.error('Duyệt hồ sơ thất bại!');
+							}
+						}}
+					>
+						<ButtonExtend
+							tooltip='Duyệt'
+							type='link'
+							className='btn-success'
+							icon={<CheckOutlined />}
+							disabled={record.status === 'approved'}
+						/>
+					</Popconfirm>
+					<ButtonExtend
+						tooltip='Chỉnh sửa'
+						onClick={() => handleEditWithVideo(record)}
+						type='link'
+						icon={<EditOutlined />}
+					/>
 					<Popconfirm
 						onConfirm={() => deleteModel(record.id)}
 						title='Bạn có chắc chắn muốn xóa bài học này?'

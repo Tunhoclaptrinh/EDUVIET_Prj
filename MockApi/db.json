@@ -4,7 +4,7 @@
       "id": "1",
       "email": "admin@eduviet.com",
       "phone_number": "0901234567",
-      "password_hash": "hashed_password_here",
+      "password": "hashed_password_here",
       "full_name": "Nguyễn Văn Admin",
       "birth_year": 1985,
       "role": "admin",
@@ -22,7 +22,7 @@
       "id": "2",
       "email": "instructor@eduviet.com",
       "phone_number": "0912345678",
-      "password_hash": "hashed_password_here",
+      "password": "hashed_password_here",
       "full_name": "Trần Thị Giảng",
       "birth_year": 1990,
       "role": "instructor",
@@ -40,7 +40,7 @@
       "id": "3",
       "email": "instructor2@eduviet.com",
       "phone_number": "0913456789",
-      "password_hash": "hashed_password_here",
+      "password": "hashed_password_here",
       "full_name": "Lê Văn Hướng Dẫn",
       "birth_year": 1988,
       "role": "instructor",
@@ -58,7 +58,7 @@
       "id": "4",
       "email": "learner@gmail.com",
       "phone_number": "0923456789",
-      "password_hash": "hashed_password_here",
+      "password": "hashed_password_here",
       "full_name": "Phạm Thị Học",
       "birth_year": 1995,
       "role": "learner",
@@ -76,7 +76,7 @@
       "id": "5",
       "email": "learner2@gmail.com",
       "phone_number": "0934567890",
-      "password_hash": "hashed_password_here",
+      "password": "hashed_password_here",
       "full_name": "Nguyễn Văn Học Viên",
       "birth_year": 2000,
       "role": "learner",
@@ -335,7 +335,6 @@
   ],
   "lessons": [
     {
-      "id": "1",
       "section_id": 1,
       "title": "Giới thiệu về React",
       "description": "Tổng quan về React và ưu điểm của nó trong phát triển web.",
@@ -344,8 +343,9 @@
       "order_number": 1,
       "is_free_preview": true,
       "status": "approved",
+      "id": "1",
       "created_at": "2025-01-15T00:00:00Z",
-      "updated_at": "2025-01-15T00:00:00Z"
+      "updated_at": "2025-06-03T02:26:28.627Z"
     },
     {
       "id": "2",
@@ -400,7 +400,6 @@
       "updated_at": "2025-01-20T00:00:00Z"
     },
     {
-      "id": "6",
       "section_id": 4,
       "title": "Cách chào hỏi cơ bản",
       "description": "Học cách chào hỏi trong tiếng Anh với nhiều tình huống khác nhau.",
@@ -409,20 +408,21 @@
       "order_number": 1,
       "is_free_preview": true,
       "status": "approved",
+      "id": "6",
       "created_at": "2025-02-10T00:00:00Z",
-      "updated_at": "2025-02-10T00:00:00Z"
+      "updated_at": "2025-06-03T03:21:01.211Z"
     }
   ],
   "videoLessons": [
     {
       "lesson_id": "1",
       "video_url": "https://youtu.be/9kzE8isXlQY?si=8KW4lGBV4Vbv84tR",
-      "embed_code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/9kzE8isXlQY?si=CP5HerL2Hn8nvBMT\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+      "embed_code": "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/9kzE8isXlQY?si=CP5HerL2Hn8nvBMT\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
       "transcript": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/9kzE8isXlQY?si=CP5HerL2Hn8nvBMT\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
       "prevent_skipping": false,
       "encryption_key": null,
       "id": "1",
-      "updated_at": "2025-06-02T12:09:51.616Z"
+      "updated_at": "2025-06-03T02:26:28.763Z"
     },
     {
       "lesson_id": 2,
@@ -453,14 +453,14 @@
       "encryption_key": "enc_key_456789"
     },
     {
-      "lesson_id": 6,
+      "lesson_id": "6",
       "video_url": "https://storage.eduviet.com/videos/english-greetings.mp4",
       "embed_code": "<iframe src=\"https://youtube.com/embed/mno345\"></iframe>",
       "transcript": "Good morning! Hello! Hi! These are common greetings...",
       "prevent_skipping": false,
       "encryption_key": "enc_key_567890",
       "id": "5",
-      "updated_at": "2025-06-02T10:28:12.838Z"
+      "updated_at": "2025-06-03T03:21:01.371Z"
     }
   ],
   "articleLessons": [

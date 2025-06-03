@@ -188,7 +188,13 @@ const VideoLessonPage = () => {
 			render: (_, record) => (
 				<Space>
 					<ButtonExtend tooltip='Xem chi tiết' onClick={() => onView(record)} type='link' icon={<EyeOutlined />} />
-					<ButtonExtend tooltip='Chỉnh sửa' onClick={() => handleEdit(record)} type='link' icon={<EditOutlined />} />
+					<ButtonExtend
+						tooltip='Chỉnh sửa'
+						onClick={() => handleEdit(record)}
+						type='link'
+						icon={<EditOutlined />}
+						disabled
+					/>
 					<Popconfirm
 						onConfirm={() => deleteModel(record.id)}
 						title='Bạn có chắc chắn muốn xóa video bài học này?'
