@@ -1,11 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useModel, history } from 'umi';
 import { message } from 'antd';
-import { Login } from '@/services/base/typing';
 import { ipLocal } from '@/utils/ip';
 
+// Define IUser interface based on API response and form fields
+interface IUser {
+	id: string;
+	email: string;
+	soDT: string; // Maps to phone_number
+	password: string; // API stores hashed password, used for login
+	fullName: string;
+	ngaySinh?: string; // Maps to birth_year
+	gioiTinh?: string;
+	preferred_username?: string;
+	role?: string;
+	profile_picture?: string;
+	created_at?: string;
+	updated_at?: string;
+	last_login?: string;
+	auth_provider?: string;
+	auth_provider_id?: string | null;
+	is_active?: boolean;
+	preferred_language?: string;
+	ui_theme?: string;
+}
+
 interface AuthState {
-	user: Login.IUser | null;
+	user: IUser | null;
 	isAuthenticated: boolean;
 	isLoading: boolean;
 }
@@ -18,39 +39,41 @@ const useAuth = () => {
 		isLoading: true,
 	});
 
-	// Kiểm tra trạng thái đăng nhập khi hook được khởi tạo
+	// Check authentication status on initialization
 	useEffect(() => {
 		const checkAuth = async () => {
 			try {
-				// Lấy user từ localStorage hoặc initialState
 				const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 				const userId = localStorage.getItem('userId');
-				let user: Login.IUser | null = initialState?.currentUser || storedUser;
+				let user: IUser | null = initialState?.currentUser || storedUser;
 
-				// Nếu có userId nhưng không có user, gọi API để lấy thông tin
 				if (userId && !user?.id) {
 					const response = await fetch(`${ipLocal}/users/${userId}`);
 					if (!response.ok) {
 						throw new Error('Không thể lấy thông tin người dùng');
 					}
-					const userData: Login.IUser = await response.json();
+					const userData = await response.json();
+					// Map API fields to IUser
+					const [ho, ...tenParts] = (userData.full_name || '').split(' ');
 					user = {
 						id: userData.id,
-						ho: userData.ho,
-						ten: userData.ten,
-						fullName: `${userData.ho} ${userData.ten}`,
 						email: userData.email,
-						soCCCD: userData.soCCCD,
-						ngaySinh: userData.ngaySinh,
+						soDT: userData.phone_number,
+						password: userData.password, // Note: Password should be hashed in real API
+						fullName: userData.full_name || '',
+						ngaySinh: userData.birth_year ? String(userData.birth_year) : undefined,
 						gioiTinh: userData.gioiTinh,
-						soDT: userData.soDT,
-						hoKhauThuongTru: userData.hoKhauThuongTru,
-						ngayCap: userData.ngayCap,
-						noiCap: userData.noiCap,
 						preferred_username: userData.preferred_username,
-						avatar: userData.avatar,
-						email_verified: userData.email_verified,
-						realm_access: userData.realm_access,
+						role: userData.role,
+						profile_picture: userData.profile_picture,
+						created_at: userData.created_at,
+						updated_at: userData.updated_at,
+						last_login: userData.last_login,
+						auth_provider: userData.auth_provider,
+						auth_provider_id: userData.auth_provider_id,
+						is_active: userData.is_active,
+						preferred_language: userData.preferred_language,
+						ui_theme: userData.ui_theme,
 					};
 					localStorage.setItem('currentUser', JSON.stringify(user));
 					await setInitialState({ currentUser: user });
@@ -73,43 +96,45 @@ const useAuth = () => {
 		checkAuth();
 	}, [initialState, setInitialState]);
 
-	// Hàm đăng nhập
+	// Login function
 	const login = async (login: string, password: string) => {
 		try {
 			setAuthState((prev) => ({ ...prev, isLoading: true }));
 
-			// Gọi API để lấy danh sách người dùng
 			const response = await fetch(`${ipLocal}/users`);
 			if (!response.ok) {
 				throw new Error('Không thể kết nối đến server. Vui lòng thử lại sau.');
 			}
-			const users: Login.IUser[] = await response.json();
+			const users: IUser[] = await response.json();
 
-			// Tìm user với email hoặc soCCCD khớp
-			const user = users.find((u: Login.IUser) => (u.email === login || u.soCCCD === login) && u.password === password);
+			// Find user by email or soDT
+			const user = users.find((u: IUser) => (u.email === login || u.soDT === login) && u.password === password);
 
 			if (!user) {
 				throw new Error('Thông tin đăng nhập không đúng');
 			}
 
-			// Lưu thông tin user vào localStorage và initialState
-			const userData: Login.IUser = {
+			// Map API fields to IUser
+			const [ho, ...tenParts] = (user.fullName || '').split(' ');
+			const userData: IUser = {
 				id: user.id,
-				ho: user.ho,
-				ten: user.ten,
-				fullName: `${user.ho} ${user.ten}`,
 				email: user.email,
-				soCCCD: user.soCCCD,
+				soDT: user.soDT,
+				password: user.password,
+				fullName: user.fullName,
 				ngaySinh: user.ngaySinh,
 				gioiTinh: user.gioiTinh,
-				soDT: user.soDT,
-				hoKhauThuongTru: user.hoKhauThuongTru,
-				ngayCap: user.ngayCap,
-				noiCap: user.noiCap,
 				preferred_username: user.preferred_username,
-				avatar: user.avatar,
-				email_verified: user.email_verified,
-				realm_access: user.realm_access,
+				role: user.role,
+				profile_picture: user.profile_picture,
+				created_at: user.created_at,
+				updated_at: user.updated_at,
+				last_login: user.last_login,
+				auth_provider: user.auth_provider,
+				auth_provider_id: user.auth_provider_id,
+				is_active: user.is_active,
+				preferred_language: user.preferred_language,
+				ui_theme: user.ui_theme,
 			};
 
 			localStorage.setItem('userId', user.id);
@@ -123,7 +148,13 @@ const useAuth = () => {
 			});
 
 			message.success('Đăng nhập thành công! Chào mừng bạn đến với hệ thống.');
-			history.push('/public/dash-board');
+
+			// Redirect based on role
+			if (user.role === 'admin') {
+				history.push('/public/dash-board');
+			} else {
+				history.push('/public/trang-chu');
+			}
 		} catch (error: any) {
 			setAuthState((prev) => ({ ...prev, isLoading: false }));
 			message.error(error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập.');
@@ -131,16 +162,13 @@ const useAuth = () => {
 		}
 	};
 
-	// Hàm đăng xuất
+	// Logout function
 	const logout = async () => {
 		try {
 			setAuthState({ user: null, isAuthenticated: false, isLoading: true });
 
-			// Xóa thông tin khỏi localStorage
 			localStorage.removeItem('userId');
 			localStorage.removeItem('currentUser');
-
-			// Xóa thông tin khỏi initialState
 			await setInitialState({ currentUser: null });
 
 			message.success('Đăng xuất thành công');

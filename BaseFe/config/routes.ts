@@ -9,13 +9,18 @@
 				name: 'login',
 				component: './user/Login',
 			},
+			// {
+			// 	path: '/user',
+			// 	redirect: '/user/login',
+			// },
 			{
-				path: '/user',
-				redirect: '/user/login',
+				path: '/user/signup',
+				layout: false,
+				name: 'signup',
+				component: './user/SignUp',
 			},
 		],
 	},
-
 	///////////////////////////////////
 	// DEFAULT MENU
 
